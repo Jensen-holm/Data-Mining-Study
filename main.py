@@ -22,12 +22,7 @@ if __name__ == "__main__":
         raise ValueError(f"Invalid method '{method}'. Choose 'nn' instead.")
 
     X, y = random_dataset()
-    args = nn.get_args()
     nn.main(
         X=X,
         y=y,
-        epochs=args["epochs"],
-        hidden_size=args["hidden_size"],
-        learning_rate=args["learning_rate"],
-        activation_func=args["activation_func"],
     )

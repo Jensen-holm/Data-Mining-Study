@@ -4,7 +4,7 @@ from neural_network.forwardprop import fp
 from neural_network.backprop import bp
 
 
-def get_args():
+def get_args() -> dict:
     """
     returns a dictionary containing
     the arguments to be passed to
@@ -34,16 +34,14 @@ def init(X: np.array, y: np.array, hidden_size: int) -> dict:
 def main(
     X: np.array,
     y: np.array,
-    epochs: int,
-    hidden_size: int,
-    learning_rate: float,
-    activation_func: str,
 ) -> None:
-    wb = init(X, y, hidden_size)
+    args = get_args()
+    wb = init(X, y, args["hidden_size"])
 
-    for e in range(epochs):
-
+    for e in range(args["epochs"]):
         fp()
         bp()
 
         # update weights and biases
+
+    # print results
