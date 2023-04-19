@@ -1,11 +1,7 @@
 import numpy as np
 
 
+def bp():
+    return
 
 
-# for testing only
-if __name__ == "__main__":
-    def test():
-        pass
-
-    test()

@@ -1,5 +1,6 @@
+import numpy as np
 
 
-def forward_prop():
+def fp():
     return
 
