@@ -1,7 +1,6 @@
-import numpy as np
-
-from neural_network.forwardprop import fp
+from sklearn.model_selection import train_test_split
 from neural_network.backprop import bp
+import numpy as np
 
 
 def get_args() -> dict:
@@ -35,13 +34,16 @@ def main(
     X: np.array,
     y: np.array,
 ) -> None:
+
     args = get_args()
     wb = init(X, y, args["hidden_size"])
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, 
+        y, 
+        test_size=0.3, 
+        random_state=8675309
+    )
 
-    for e in range(args["epochs"]):
-        fp()
-        bp()
+    results = bp(X_train, y_train, wb, args)
 
-        # update weights and biases
 
-    # print results
