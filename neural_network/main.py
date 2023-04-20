@@ -1,9 +1,10 @@
 from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
 import numpy as np
 
 from neural_network.opts import activation
 from neural_network.backprop import bp
-from neural_network.model import Model
+from neural_network.model import Network
 from neural_network.plot import loss_history_plt
 
 
@@ -52,7 +53,9 @@ def main(
     results, loss_history = bp(X_train, y_train, wb, args)
     final = results[args["epochs"] - 1]
     func = activation[args["activation_func"]]["main"]
-    fm = Model(final_wb=final, activation_func=func)
+
+    # initialize our final network
+    fm = Network(final_wb=final, activation_func=func)
 
     # predict the x test data and compare it to y test data
     pred = fm.predict(X_test)
@@ -61,4 +64,6 @@ def main(
 
     # plot predicted versus actual
     # also plot the training loss over epochs
-    loss_history_plt(loss_history)
+    animated_loss_plt = loss_history_plt(loss_history)
+    # eventually we will save this plot
+    plt.show()

@@ -2,7 +2,7 @@ import numpy as np
 from typing import Callable
 
 
-class Model:
+class Network:
     def __init__(self, final_wb: dict[str, np.array], activation_func: Callable):
         self.func = activation_func
         self.final_wb = final_wb

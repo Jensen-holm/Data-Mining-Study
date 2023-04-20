@@ -19,7 +19,7 @@ def main():
     except KeyError:
         raise f"Invalid method \"{method}\". Try one of these\n{list(options.keys())}"
 
-    X, y = random_dataset(rows=10, features=2)
+    X, y = random_dataset(rows=1000, features=10)
     func(X, y)
 
 

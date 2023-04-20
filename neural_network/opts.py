@@ -10,4 +10,9 @@ activation = {
         "main": sigmoid,
         "prime": sigmoid_prime,
     },
+
+    "tanh": {
+        "main": tanh,
+        "prime": tanh_prime,
+    },
 }

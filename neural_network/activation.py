@@ -1,17 +1,10 @@
 import numpy as np
 
+relu = lambda x: np.maximum(x, 0)
+relu_prime = lambda x: np.where(x > 0, 1, 0)
 
-def sigmoid(x: float) -> float:
-    return 1.0 / (1.0 + np.exp(-x))
+tanh = lambda x: np.tanh(x)
+tanh_prime = lambda x: 1 - tanh(x) ** 2
 
-
-def sigmoid_prime(x: float) -> float:
-    return sigmoid(x) / (1.0 - sigmoid(x))
-
-
-def relu(x):
-    return np.maximum(x, 0)
-
-
-def relu_prime(x):
-    return np.where(x > 0, 1, 0)
+sigmoid = lambda x: 1.0 / (1.0 + np.exp(-x))
+sigmoid_prime = lambda x: sigmoid(x) / 1.0 - sigmoid(x)

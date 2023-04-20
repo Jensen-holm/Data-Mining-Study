@@ -1,11 +1,17 @@
 import seaborn as sns
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
+from matplotlib.animation import FuncAnimation, FFMpegWriter
 
 sns.set()
 
+"""
+Save plots to the plots folder for when
+we would like to show results on our little
+flask application
+"""
 
-def loss_history_plt(loss_history: list) -> None:
+
+def loss_history_plt(loss_history: list) -> FuncAnimation:
     fig, ax = plt.subplots()
 
     def animate(i):
@@ -18,5 +24,12 @@ def loss_history_plt(loss_history: list) -> None:
         ax.set_xlabel("Epoch")
         ax.set_ylabel("Training Loss")
 
-    _ = FuncAnimation(fig, animate, frames=len(loss_history), interval=100)
-    plt.show()
+    return FuncAnimation(fig, animate, frames=len(loss_history), interval=100)
+
+
+def save_plt(plot, filename: str, animated: bool, fps=10):
+    if not animated:
+        plot.savefig(filename)
+        return
+    writer = FFMpegWriter(fps=fps)
+    plot.save(filename, writer=writer)
