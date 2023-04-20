@@ -1,18 +1,16 @@
-import numpy as np
 from opts import options
+import numpy as np
+from pprint import pprint
 
 
-def random_dataset():
+def random_dataset(rows: int, features: int):
     """
-    initializes a training and
-    a testing dataset in the form
-    of numpy arrays
+    Initializes a training and a testing dataset in the form of numpy arrays
     """
-    np.random.seed(8675309)
-    return (
-        np.random.randn(10000, 10),
-        np.random.randint(5, size=(10000, 1)),
-    )
+    rng = np.random.default_rng()
+    X = rng.normal(size=(rows, features))
+    y = rng.integers(5, size=(rows, 1))
+    return X, y
 
 
 def main():
@@ -22,8 +20,8 @@ def main():
     except KeyError:
         raise f"Invalid method \"{method}\". Try one of these\n{list(options.keys())}"
 
-    X, y = random_dataset()
-    result = func(X, y)
+    X, y = random_dataset(rows=10, features=2)
+    func(X, y)
 
 
 if __name__ == "__main__":
