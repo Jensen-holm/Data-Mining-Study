@@ -4,6 +4,7 @@ import numpy as np
 from neural_network.opts import activation
 from neural_network.backprop import bp
 from neural_network.model import Model
+from neural_network.plot import loss_history_plt
 
 
 def get_args() -> dict:
@@ -60,3 +61,4 @@ def main(
 
     # plot predicted versus actual
     # also plot the training loss over epochs
+    loss_history_plt(loss_history)

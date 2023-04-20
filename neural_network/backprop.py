@@ -13,14 +13,14 @@ def bp(X_train: np.array, y_train: np.array, wb: dict, args: dict) -> (dict, np.
     lr = args["learning_rate"]
 
     r = {}
-    loss_history = np.array([])
+    loss_history = []
     for e in tqdm(range(epochs)):
         # forward prop
         node1 = compute_node(arr=X_train, w=w1, b=b1, func=func)
         y_hat = compute_node(arr=node1, w=w2, b=b2, func=func)
         error = y_hat - y_train
         mean_squared_error = mse(y_train, y_hat)
-        loss_history = np.append(loss_history, mean_squared_error)
+        loss_history.append(mean_squared_error)
 
         # backprop
         dw1 = np.dot(
