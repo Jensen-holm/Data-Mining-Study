@@ -48,8 +48,8 @@ def main(
 
     # once we have these results we should test it against
     # the y_test data
-    results = bp(X_train, y_train, wb, args)
-    final = results[args["epochs"]-1]
+    results, loss_history = bp(X_train, y_train, wb, args)
+    final = results[args["epochs"] - 1]
     func = activation[args["activation_func"]]["main"]
     fm = Model(final_wb=final, activation_func=func)
 
@@ -57,3 +57,6 @@ def main(
     pred = fm.predict(X_test)
     mse = np.mean((pred - y_test) ** 2)
     print(f"mean squared error: {mse}")
+
+    # plot predicted versus actual
+    # also plot the training loss over epochs

@@ -1,6 +1,5 @@
 from opts import options
 import numpy as np
-from pprint import pprint
 
 
 def random_dataset(rows: int, features: int):
