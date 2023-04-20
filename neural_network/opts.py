@@ -1,6 +1,5 @@
 from neural_network.activation import *
 
-
 activation = {
     "relu": {
         "main": relu,

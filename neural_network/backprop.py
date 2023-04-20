@@ -21,20 +21,18 @@ def bp(X_train: np.array, y_train: np.array, wb: dict, args: dict):
         # right now this is just the weights,
         # we should also update the biases
         dw2 = np.dot(
-            node1.T, 
+            node1.T,
             error * func_prime(y_hat),
         )
         dw1 = np.dot(
-            X_train.T, 
+            X_train.T,
             np.dot(error * func_prime(y_hat), w2.T) * func_prime(node1),
         )
 
         # update weights & biases
         w1 -= lr * dw1
         w2 -= lr * dw2
-    
+
 
 def compute_node(X, w, b, func):
     return func(np.dot(X, w) + b)
-
-

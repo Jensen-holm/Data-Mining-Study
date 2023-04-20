@@ -1,6 +1,5 @@
 import numpy as np
-
-import neural_network.main as nn
+from opts import options
 
 
 def random_dataset():
@@ -16,13 +15,16 @@ def random_dataset():
     )
 
 
-if __name__ == "__main__":
+def main():
     method = input("\nChoose a method to test: ").lower()
-    if method != "nn":
-        raise ValueError(f"Invalid method '{method}'. Choose 'nn' instead.")
+    try:
+        func = options[method]
+    except KeyError:
+        raise f"Invalid method \"{method}\". Try one of these\n{list(options.keys())}"
 
     X, y = random_dataset()
-    nn.main(
-        X=X,
-        y=y,
-    )
+    result = func(X, y)
+
+
+if __name__ == "__main__":
+    main()

@@ -31,19 +31,16 @@ def init(X: np.array, y: np.array, hidden_size: int) -> dict:
 
 
 def main(
-    X: np.array,
-    y: np.array,
+        X: np.array,
+        y: np.array,
 ) -> None:
-
     args = get_args()
     wb = init(X, y, args["hidden_size"])
     X_train, X_test, y_train, y_test = train_test_split(
-        X, 
-        y, 
-        test_size=0.3, 
+        X,
+        y,
+        test_size=0.3,
         random_state=8675309
     )
 
     results = bp(X_train, y_train, wb, args)
-
-
