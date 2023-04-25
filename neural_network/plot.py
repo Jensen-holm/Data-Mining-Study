@@ -10,6 +10,8 @@ we would like to show results on our little
 flask application
 """
 
+PLT_PATH: str = "static/assets/"
+
 
 def loss_history_plt(loss_history: list) -> FuncAnimation:
     fig, ax = plt.subplots()
@@ -32,4 +34,4 @@ def save_plt(plot, filename: str, animated: bool, fps=10):
         plot.savefig(filename)
         return
     writer = FFMpegWriter(fps=fps)
-    plot.save(filename, writer=writer)
+    plot.save(PLT_PATH + filename, writer=writer)

@@ -14,9 +14,6 @@
 3. `npx tailwindcss -i ./static/src/input.css -o ./static/dist/css/output.css --watch` <br>
 <br>
 (in another terminal window) <br>
-4. `python3 app.py` <br>
-
-### Prod
-1. `chmod +x run.sh` <br>
-2.  `./run.sh` <br>
+4. `chmod +x run.sh` <br>
+5. `./run.sh` <br>
 
