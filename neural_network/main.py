@@ -1,25 +1,10 @@
 from sklearn.model_selection import train_test_split
-import matplotlib.pyplot as plt
 import numpy as np
 
 from neural_network.opts import activation
 from neural_network.backprop import bp
 from neural_network.model import Network
-from neural_network.plot import loss_history_plt
-
-
-def get_args() -> dict:
-    """
-    returns a dictionary containing
-    the arguments to be passed to
-    the main function
-    """
-    return {
-        "epochs": int(input("Enter the number of epochs: ")),
-        "hidden_size": int(input("Enter the number of hidden nodes: ")),
-        "learning_rate": float(input("Enter the learning rate: ")),
-        "activation_func": input("Enter the activation function: "),
-    }
+from neural_network.plot import loss_history_plt, save_plt
 
 
 def init(X: np.array, hidden_size: int) -> dict:
@@ -38,8 +23,8 @@ def init(X: np.array, hidden_size: int) -> dict:
 def main(
         X: np.array,
         y: np.array,
+        args,
 ) -> None:
-    args = get_args()
     wb = init(X, args["hidden_size"])
     X_train, X_test, y_train, y_test = train_test_split(
         X,
@@ -65,5 +50,4 @@ def main(
     # plot predicted versus actual
     # also plot the training loss over epochs
     animated_loss_plt = loss_history_plt(loss_history)
-    # eventually we will save this plot
-    plt.show()
+    save_plt(animated_loss_plt, "plt.svg", animated=True, fps=30)
