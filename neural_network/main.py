@@ -7,7 +7,10 @@ from neural_network.model import Network
 from neural_network.plot import loss_history_plt, save_plt
 
 
-def init(X: np.array, hidden_size: int) -> dict:
+def init(
+    X: np.array,
+    hidden_size: int
+) -> dict:
     """
     returns a dictionary containing randomly initialized
     weights and biases to start off the neural_network

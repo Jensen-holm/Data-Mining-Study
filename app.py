@@ -25,6 +25,11 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/select_algorithm", methods=["GET", "POST"])
+def select_algorithm():
+    return
+
+
 @app.route("/process_algorithm", methods=["GET", "POST"])
 def process_algorithm():
     alg = request.form.get('model-select')
@@ -33,7 +38,7 @@ def process_algorithm():
     # have a form for options based on the algorithm the user chose
     # and set it as the args variable, make a 'go' button for this funcitonality
     # to start the algorithm
-    args = 0
+    args = request.form.get("params")
     if args:
         # create random numpy array dataset
         X, y = random_dataset(100, 3)
