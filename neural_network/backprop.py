@@ -20,7 +20,7 @@ def get_args(args: dict, wb: dict):
 def fp(
     X_train: np.array,
     y_train: np.array,
-    actiavtion: callable,
+    activation: callable,
     w1: np.array,
     w2: np.array,
     b1: np.array,

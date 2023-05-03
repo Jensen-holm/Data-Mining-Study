@@ -24,9 +24,9 @@ def init(
 
 
 def main(
-        X: np.array,
-        y: np.array,
-        args,
+    X: np.array,
+    y: np.array,
+    args,
 ) -> None:
     wb = init(X, args["hidden_size"])
     X_train, X_test, y_train, y_test = train_test_split(
