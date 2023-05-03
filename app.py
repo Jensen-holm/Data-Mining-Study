@@ -10,43 +10,42 @@ app = Flask(
 )
 
 
-def is_valid(params: dict):
+def not_valid(params: dict):
     """
     is_valid() simply checks if
     an incoming response is valid
     for this api or not. Key to
     avoiding errors
     """
-    if not request.json():
-        return False
+    if "algorithm" not in params:
+        return "User did not specify the algorithm parameter"
 
-    if "Algorithm" not in params:
-        return False
-
-    if params["Algorithm"] not in options:
-        return False
-    return True
+    if params["algorithm"] not in options:
+        return f"Invalid algorithm '{params['algorithm']}' is invalid."
+    return False
 
 
 @app.route("/", methods=["GET"])
 def index():
-
-    params = request.json()
-    if not is_valid(params=params):
-        return make_response(400, "bad request")
+    params = request.json
+    error_message = not_valid(params=params)
+    if error_message:
+        return make_response(error_message, 400)
 
     # parse arguments
-    algorithm = options[params["Algorithm"]]
-    args = options[params["Arguments"]]
+    algorithm = options[params["algorithm"]]
+    args = params["arguments"]
 
-    X, y = random_dataset()
-    results = algorithm.main(
-        X=X,
-        y=y,
-        args=args,
+    # in the future instead of a random data set
+    # we should do a more real one like palmer penguins
+    X, y = random_dataset(100, 10)
+    return jsonify(
+        algorithm(
+            X=X,
+            y=y,
+            args=args,
+        )
     )
-
-    return jsonify(results)
 
 
 if __name__ == '__main__':
