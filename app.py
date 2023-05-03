@@ -28,6 +28,7 @@ def not_valid(params: dict):
 @app.route("/", methods=["GET"])
 def index():
     params = request.json
+    print(params)
     error_message = not_valid(params=params)
     if error_message:
         return make_response(error_message, 400)
@@ -39,13 +40,8 @@ def index():
     # in the future instead of a random data set
     # we should do a more real one like palmer penguins
     X, y = random_dataset(100, 10)
-    return jsonify(
-        algorithm(
-            X=X,
-            y=y,
-            args=args,
-        )
-    )
+    model = algorithm(X, y, args)
+    return jsonify(model)
 
 
 if __name__ == '__main__':
