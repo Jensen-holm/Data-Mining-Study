@@ -44,5 +44,4 @@ def main(
         X_test=X_test,
         y_test=y_test,
     )
-    return model.__dict__
-
+    return model.to_dict()

@@ -25,6 +25,7 @@ class NeuralNetwork:
         return self.compute_node(n1, self.w2, self.b2, self.activation_func)
 
     def set_loss_hist(self, loss_hist: list) -> None:
+        assert (isinstance(loss_hist, list))
         self.loss_history = loss_hist
 
     def eval(self, X_test, y_test) -> None:
@@ -37,3 +38,16 @@ class NeuralNetwork:
     @classmethod
     def from_dict(cls, dct):
         return cls(**dct)
+
+    def to_dict(self) -> dict:
+        return {
+            "w1": list(self.w1),
+            "w2": list(self.w2),
+            "b1": list(self.b1),
+            "b2": list(self.b2),
+            "epochs": self.epochs,
+            "learning_rate": self.learning_rate,
+            "activation_func": self.activation_func.__name__,
+            "func_prime": self.func_prime.__name__,
+            "hidden_size": self.hidden_size,
+        }
