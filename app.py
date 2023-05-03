@@ -28,7 +28,6 @@ def not_valid(params: dict):
 @app.route("/", methods=["GET"])
 def index():
     params = request.json
-    print(params)
     error_message = not_valid(params=params)
     if error_message:
         return make_response(error_message, 400)
@@ -44,7 +43,7 @@ def index():
     return jsonify(model)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(
         debug=True,
     )
