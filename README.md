@@ -13,18 +13,21 @@ request_params = {
     "arguments": {
         "epochs": 100,
         "activation_func": "relu",
-        "hidden_size": "8",
+        "hidden_size": 8,
         "learning_rate": 0.1,
     }
 }
 
+headers = {
+    "Content-Type": "application/json",
+}
+
 r = requests.post(
     "https://data-mining-from-scratch-backend.onrender.com/",
-    json=request_params,
+    headers=headers,
+    data=json.dumps(request_params),
 )
 
-response_data = json.loads(r.json)
-print(response_data)
-
+model_data = r.json()
+print(model_data)
 ```
-
