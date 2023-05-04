@@ -22,8 +22,8 @@ def bp(
     X_train: np.array,
     y_train: np.array,
     wb: dict,
-    args: dict
-):
+    args: dict,
+) -> NeuralNetwork:
     model = NeuralNetwork.from_dict(args | wb)
     loss_history = []
     for _ in range(model.epochs):

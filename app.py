@@ -41,13 +41,11 @@ def index():
     # in the future instead of a random data set
     # we should do a more real one like palmer penguins
 
-    X_train, X_test, y_train, y_test = iris()
+    X, y = iris()
     return jsonify(
         algorithm(
-            X_train=X_train,
-            y_train=y_train,
-            X_test=X_test,
-            y_test=y_test,
+            X=X,
+            y=y,
             args=args,
         )
     )

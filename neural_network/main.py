@@ -37,7 +37,12 @@ def main(
         random_state=8675309,
     )
 
-    model = bp(X_train, y_train, wb, args)
+    model = bp(
+        X_train=X_train,
+        y_train=y_train,
+        wb=wb,
+        args=args,
+    )
 
     # evaluate the model and return final results
     model.eval(
