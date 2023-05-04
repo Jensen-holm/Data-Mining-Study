@@ -1,0 +1,30 @@
+# Data Mining from scratch backend
+
+Currently living [here](https://data-mining-from-scratch-backend.onrender.com/)
+
+### Example Useage
+
+```python
+import requests
+import json
+
+request_params = {
+    "algorithm": "neural-network",
+    "arguments": {
+        "epochs": 100,
+        "activation_func": "relu",
+        "hidden_size": "8",
+        "learning_rate": 0.1,
+    }
+}
+
+r = requests.post(
+    "https://data-mining-from-scratch-backend.onrender.com/",
+    json=request_params,
+)
+
+response_data = json.loads(r.json)
+print(response_data)
+
+```
+

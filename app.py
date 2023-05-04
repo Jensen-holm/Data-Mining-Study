@@ -26,22 +26,23 @@ def not_valid(params: dict):
 
 @app.route("/", methods=["POST", "GET"])
 def index():
-    if request.method == "POST":
-        params = request.json
-        error_message = not_valid(params=params)
-        if error_message:
-            return make_response(error_message, 400)
+    if request.method == "GET":
+        return render_template("index.html")
 
-        # parse arguments
-        algorithm = options[params["algorithm"]]
-        args = params["arguments"]
+    params = request.json
+    error_message = not_valid(params=params)
+    if error_message:
+        return make_response(error_message, 400)
 
-        # in the future instead of a random data set
-        # we should do a more real one like palmer penguins
-        X, y = random_dataset(100, 10)
-        model = algorithm(X, y, args)
-        return jsonify(model)
-    return render_template("index.html")
+    # parse arguments
+    algorithm = options[params["algorithm"]]
+    args = params["arguments"]
+
+    # in the future instead of a random data set
+    # we should do a more real one like palmer penguins
+    X, y = random_dataset(100, 10)
+    model = algorithm(X, y, args)
+    return jsonify(model)
 
 
 if __name__ == "__main__":
