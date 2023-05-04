@@ -8,10 +8,10 @@ WORKDIR /app
 COPY . /app
 
 # Install any needed packages specified in requirements.txt
-RUN pip3 install -r requirements.txt
+RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
-# Make port 80 available to the world outside this container
-EXPOSE 80
+# Expose port 8080 for Render to proxy traffic to
+EXPOSE 8080
 
-# Run the Gunicorn server with 4 worker processes
-CMD ["gunicorn", "--bind", "0.0.0.0:80", "--workers", "4", "app:app"]
+# Start the Gunicorn server
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "4", "app:app"]
