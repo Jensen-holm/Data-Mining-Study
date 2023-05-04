@@ -48,8 +48,9 @@ def bp(
             error * model.func_prime(y_hat),
         )
         db2 = np.sum(error * model.func_prime(y_hat), axis=0)
-        db1 = np.sum(np.dot(error * model.func_prime(y_hat), model.w2.T)
-                     * model.func_prime(node1), axis=0)
+        db1 = np.sum(
+            np.dot(error * model.func_prime(y_hat), model.w2.T) * model.func_prime(node1), axis=0,
+        )
 
         # update weights & biases using gradient descent.
         # this is -= and not += because if the gradient descent

@@ -5,10 +5,7 @@ from neural_network.opts import activation
 from neural_network.backprop import bp
 
 
-def init(
-    X: np.array,
-    hidden_size: int
-) -> dict:
+def init(X: np.array, hidden_size: int) -> dict:
     """
     returns a dictionary containing randomly initialized
     weights and biases to start off the neural_network
@@ -16,8 +13,8 @@ def init(
     return {
         "w1": np.random.randn(X.shape[1], hidden_size),
         "b1": np.zeros((1, hidden_size)),
-        "w2": np.random.randn(hidden_size, 1),
-        "b2": np.zeros((1, 1)),
+        "w2": np.random.randn(hidden_size, 3),  # Output layer has 3 neurons
+        "b2": np.zeros((1, 3)),  # Output layer has 3 neurons
     }
 
 
