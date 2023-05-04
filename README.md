@@ -40,10 +40,9 @@ print(model_data)
 
 - Algorithm: <br>
 
-* `"neural-network"` <br>
-* `"kmeans-clustering"` <br>
-* `"kmedoid-clustering"` <br>
-* `"heirarchical-clustering"` <br>
+  -`"neural-network"` <br>
+
+  - `"kmeans-clustering"` <br> -`"kmedoid-clustering"` <br> -`"heirarchical-clustering"` <br>
 
 - Algorithm Specific Arguments
 
