@@ -15,4 +15,3 @@ EXPOSE 80
 
 # Run the Gunicorn server with 4 worker processes
 CMD ["gunicorn", "--bind", "0.0.0.0:80", "--workers", "4", "app:app"]
-

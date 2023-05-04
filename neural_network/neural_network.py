@@ -36,10 +36,10 @@ class NeuralNetwork:
         return func(np.dot(arr, w) + b)
 
     @classmethod
-    def from_dict(cls, dct) -> "NeuralNetwork":
+    def from_dict(cls, dct):
         return cls(**dct)
 
-    def to_dict(self) -> dict[str, list | int | float | str]:
+    def to_dict(self) -> dict:
         return {
             "w1": self.w1.tolist(),
             "w2": self.w2.tolist(),
