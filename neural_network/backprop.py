@@ -65,9 +65,6 @@ def bp(
 
 
 def compute_node(arr, w, b, func):
-    """
-    Computes nodes during forward prop
-    """
     return func(np.dot(arr, w) + b)
 
 

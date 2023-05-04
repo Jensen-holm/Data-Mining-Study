@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify, make_response, render_template
 
-from dataset.random import random_dataset
 from dataset.iris import iris
 from opts import options
 
@@ -52,4 +51,4 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=False)
