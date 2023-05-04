@@ -1,6 +1,10 @@
 # Data Mining from scratch backend
 
-Currently living [here](https://data-mining-from-scratch-backend.onrender.com/)
+Currently living [here](https://data-mining-from-scratch-backend.onrender.com/) <br>
+Since the API is hosted using render's free tier, <br>
+every time 15 minutes goes by it gets shut down. <br>
+If a request is made while it is shut down, the web service <br>
+has to spin back up again which takes roughly 1 minute <br>
 
 ### Example Useage
 
@@ -31,3 +35,14 @@ r = requests.post(
 model_data = r.json()
 print(model_data)
 ```
+
+### Parameter Options
+
+\*\*Algorithm: <br>
+
+- `"neural-network"` <br>
+- `"kmeans-clustering"` <br>
+- `"kmedoid-clustering"` <br>
+- `"heirarchical-clustering"` <br>
+
+\*\*Algorithm Specific Parameters

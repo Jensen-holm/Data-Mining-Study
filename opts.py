@@ -5,4 +5,6 @@ options = {
     "neural-network": nn,
     "kmeans-clustering": clust,
     "kmedoid-clustering": clust,
+    "heirarchical-clustering": clust,
+    "dbscan-clustering": clust,
 }
