@@ -1,11 +1,10 @@
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request, jsonify, make_response, render_template
 
 from dataset.random import random_dataset
 from opts import options
 
 app = Flask(
     __name__,
-    static_folder="static",
     template_folder="templates",
 )
 
@@ -25,22 +24,24 @@ def not_valid(params: dict):
     return False
 
 
-@app.route("/", methods=["GET"])
+@app.route("/", methods=["POST", "GET"])
 def index():
-    params = request.json
-    error_message = not_valid(params=params)
-    if error_message:
-        return make_response(error_message, 400)
+    if request.method == "POST":
+        params = request.json
+        error_message = not_valid(params=params)
+        if error_message:
+            return make_response(error_message, 400)
 
-    # parse arguments
-    algorithm = options[params["algorithm"]]
-    args = params["arguments"]
+        # parse arguments
+        algorithm = options[params["algorithm"]]
+        args = params["arguments"]
 
-    # in the future instead of a random data set
-    # we should do a more real one like palmer penguins
-    X, y = random_dataset(100, 10)
-    model = algorithm(X, y, args)
-    return jsonify(model)
+        # in the future instead of a random data set
+        # we should do a more real one like palmer penguins
+        X, y = random_dataset(100, 10)
+        model = algorithm(X, y, args)
+        return jsonify(model)
+    return render_template("index.html")
 
 
 if __name__ == "__main__":
