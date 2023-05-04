@@ -38,11 +38,17 @@ print(model_data)
 
 ### Parameter Options
 
-\*\*Algorithm: <br>
+- Algorithm: <br>
 
-- `"neural-network"` <br>
-- `"kmeans-clustering"` <br>
-- `"kmedoid-clustering"` <br>
-- `"heirarchical-clustering"` <br>
+* `"neural-network"` <br>
+* `"kmeans-clustering"` <br>
+* `"kmedoid-clustering"` <br>
+* `"heirarchical-clustering"` <br>
 
-\*\*Algorithm Specific Parameters
+- Algorithm Specific Arguments
+
+  - neural-network
+    - epochs: any integer
+    - activation_func: tanh, sigmoid, or relu
+    - hidden_size: must be an even integer
+    - learning_rate: any floating point number
