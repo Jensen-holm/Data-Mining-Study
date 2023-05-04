@@ -22,21 +22,16 @@ def init(
 
 
 def main( 
-    X: np.array,
-    y: np.array,
+    X_train: np.array,
+    y_train: np.array,
+    X_test: np.array,
+    y_test: np.array,
     args,
 ) -> None:
-    wb = init(X, args["hidden_size"])
+    wb = init(X_train, args["hidden_size"])
     act = activation[args["activation_func"]]
     args["activation_func"] = act["main"]
     args["func_prime"] = act["prime"]
-
-    X_train, X_test, y_train, y_test = train_test_split(
-        X,
-        y,
-        test_size=0.3,
-        random_state=8675309
-    )
     model = bp(X_train, y_train, wb, args)
 
     # evaluate the model and return final results
