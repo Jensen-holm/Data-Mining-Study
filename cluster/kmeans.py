@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 import numpy as np
 
-from cluster.distance import euclidean
 from cluster.clusterer import Clusterer
 
 
@@ -13,7 +12,7 @@ class Kmeans(Clusterer):
     def build(
         self,
         X: np.array,
-    ):
+    ) -> dict[str, np.array]:
         # randomly initialize centroids
         centroids = X[np.random.choice(
             X.shape[0],
@@ -25,6 +24,17 @@ class Kmeans(Clusterer):
         # then assign each point to its closest cluster
         clusters = self.assign_clusters(X, centroids)
         centroids = self.update_centroids(self.k, X, clusters)
+
+        while True:
+            new_clusts = self.assign_clusters(X, centroids)
+            if np.array_equal(new_clusts, clusters):
+                break
+            clusters = new_clusts
+            centroids = self.update_centroids(self.k, X, clusters)
+        return {
+            "clusters": clusters,
+            "centroids": centroids,
+        }
 
     @staticmethod
     def assign_clusters(
