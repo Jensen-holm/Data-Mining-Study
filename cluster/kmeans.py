@@ -8,11 +8,13 @@ from cluster.clusterer import Clusterer
 class Kmeans(Clusterer):
     k: int
     max_iter: int
+    centroids = None
+    clusters = None
 
     def build(
         self,
         X: np.array,
-    ) -> dict[str, np.array]:
+    ) -> None:
         # randomly initialize centroids
         centroids = X[np.random.choice(
             X.shape[0],
@@ -31,10 +33,9 @@ class Kmeans(Clusterer):
                 break
             clusters = new_clusts
             centroids = self.update_centroids(self.k, X, clusters)
-        return {
-            "clusters": clusters,
-            "centroids": centroids,
-        }
+
+        self.clusters = clusters
+        self.centroids = centroids
 
     @staticmethod
     def assign_clusters(
@@ -56,8 +57,10 @@ class Kmeans(Clusterer):
             centroids[i] = X[clusters == i].mean(axis=0)
         return centroids
 
-    def label():
-        ...
-
-    def main(self):
-        return self.from_dict()
+    def to_dict(self) -> dict:
+        return {
+            "k": self.k,
+            "max_iter": self.max_iter,
+            "centroids": self.centroids,
+            "clusters": self.clusters,
+        }

@@ -8,11 +8,8 @@ from cluster.clusterer import Clusterer
 class Kmedoids(Clusterer):
     k: int
 
-    def build(self, X_train: np.array):
+    def main(self, X):
         ...
 
-    def label():
-        ...
-
-    def main():
+    def build(self, X: np.array):
         ...

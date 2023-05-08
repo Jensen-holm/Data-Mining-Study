@@ -12,6 +12,8 @@ def main(
     args: dict,
 ) -> dict:
     cluster_alg: Clusterer = clustering_methods[args["algorithm"]]
-    model = cluster_alg.main(X, args)
-    model.eval(X, y)
-    return model.to_dict()
+
+    alg = cluster_alg.from_dict(args)
+    alg.build(X)
+
+    return alg.to_dict()

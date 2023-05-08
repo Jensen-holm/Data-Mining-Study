@@ -1,5 +1,8 @@
 import numpy as np
 
+# right now I am not using this function
+# maybe get rid of it or change it to how we 
+# use it in our distance calculations
 
 def euclidean(
     point: np.array,
