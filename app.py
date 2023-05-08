@@ -36,7 +36,9 @@ def index():
     # parse arguments
     algorithm = options[request.json["algorithm"]]
     args = request.json["arguments"]
-    args["algorithm"] = request.json["algorithm"]
+
+    if "cluster" in request.json["algorithm"]:
+        args["algorithm"] = request.json["algorithm"]
 
     # using the iris data set for every algorithm
     X, y = iris()
