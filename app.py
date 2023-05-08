@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, make_response, render_template
+from flask_cors import CORS
 
 from dataset.iris import iris
 from opts import options
@@ -7,6 +8,8 @@ app = Flask(
     __name__,
     template_folder="templates",
 )
+
+CORS(app)
 
 
 def not_valid(params: dict):
