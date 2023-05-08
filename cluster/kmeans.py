@@ -12,29 +12,39 @@ class Kmeans(Clusterer):
 
     def build(
         self,
-        X_train: np.array,
+        X: np.array,
     ):
-        # Randomly select centroid start points, uniformly distributed across the domain of the dataset
-        minimum = np.min(X_train, axis=0)
-        maximum = np.max(X_train, axis=0)
-        centroids = [np.uniform(minimum, maximum) for _ in range(self.k)]
+        # randomly initialize centroids
+        centroids = X[np.random.choice(
+            X.shape[0],
+            self.k,
+            replace=False,
+        )]
 
-        # loop through and cluster data
-        prev_centroids = 0
-        iteration = 0
-        while True:
-            sorted_pts = [[] for _ in range(self.k)]
-            for x in X_train:
-                dists = euclidean(x, centroids)
+        # Calculate Euclidean distance between each data point and each centroid
+        # then assign each point to its closest cluster
+        clusters = self.assign_clusters(X, centroids)
+        centroids = self.update_centroids(self.k, X, clusters)
 
-            if not np.not_equal(
-                centroids,
-                prev_centroids,
-            ).any():
-                break
-            if not iteration < self.k:
-                break
-            iteration += 1
+    @staticmethod
+    def assign_clusters(
+        X: np.array,
+        centroids: np.array,
+    ) -> np.array:
+        distances = np.sqrt(((X - centroids[:, np.newaxis])**2).sum(axis=2))
+        clusts = np.argmin(distances, axis=0)
+        return clusts
+
+    @staticmethod
+    def update_centroids(
+        k: int,
+        X: np.array,
+        clusters: np.array,
+    ) -> np.array:
+        centroids = np.zeros((k, X.shape[1]))
+        for i in range(k):
+            centroids[i] = X[clusters == i].mean(axis=0)
+        return centroids
 
     def label():
         ...
