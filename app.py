@@ -37,17 +37,14 @@ def index():
     algorithm = options[request.json["algorithm"]]
     args = request.json["arguments"]
 
-    # in the future instead of a random data set
-    # we should do a more real one like palmer penguins
-
+    # using the iris data set for every algorithm
     X, y = iris()
-    return jsonify(
-        algorithm(
-            X=X,
-            y=y,
-            args=args,
-        )
+    result = algorithm(
+        X=X,
+        y=y,
+        args=args,
     )
+    return jsonify(result)
 
 
 if __name__ == "__main__":

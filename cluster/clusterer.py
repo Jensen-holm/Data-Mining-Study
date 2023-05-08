@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from typing import Callable
+
 import numpy as np
 
 
@@ -8,17 +9,15 @@ class Clusterer:
     cluster_func: Callable
     options: dict
 
-    accuracy: float = 0
-
-    @staticmethod
-    def label():
-        return
-
-    def eval(y_pred, y_true) -> None:
-        return
+    def eval(
+        self,
+        pred_labels: np.array,
+        true_labels: np.array,
+    ) -> None:
+        ...
 
     @classmethod
-    def from_dict(cls, dct):
+    def from_dict(cls, dct: dict):
         return cls(**dct)
 
     def to_dict(self):
