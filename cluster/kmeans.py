@@ -57,10 +57,21 @@ class Kmeans(Clusterer):
             centroids[i] = X[clusters == i].mean(axis=0)
         return centroids
 
-    def to_dict(self) -> dict:
+    def to_dict(
+        self,
+        X: np.array,
+    ) -> dict:
+        cluster_data = []
+        for i in range(self.k):
+            indices = np.where(self.clusters == i)[0]
+            cluster_pts = X[indices].tolist()
+            cluster_data.append({
+                "cluster_id": i,
+                "centroid": self.centroids[i].tolist(),
+                "points": cluster_pts,
+            })
         return {
             "k": self.k,
             "max_iter": self.max_iter,
-            "centroids": self.centroids.tolist(),
-            "clusters": self.clusters.tolist(),
+            "clusters": cluster_data,
         }

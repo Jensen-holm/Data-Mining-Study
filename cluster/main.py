@@ -17,4 +17,4 @@ def main(
     alg = cluster_alg.from_dict(cluster_args)
 
     alg.build(X)
-    return alg.to_dict()
+    return alg.to_dict(X)
