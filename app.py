@@ -36,6 +36,7 @@ def index():
     # parse arguments
     algorithm = options[request.json["algorithm"]]
     args = request.json["arguments"]
+    args["algorithm"] = request.json["algorithm"]
 
     # using the iris data set for every algorithm
     X, y = iris()
@@ -48,4 +49,4 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True)

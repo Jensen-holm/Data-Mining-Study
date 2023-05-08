@@ -4,6 +4,6 @@ from cluster.kmeans import Kmeans
 
 
 clustering_methods: dict[str, Clusterer] = {
-    "kmeans": Kmeans,
-    "kmedoids": Kmedoids,
+    "kmeans-clustering": Kmeans,
+    "kmedoids-clustering": Kmedoids,
 }

@@ -3,7 +3,9 @@ import seaborn as sns
 import requests
 import json
 
-ENDPOINT: str = "https://data-mining-from-scratch-backend.onrender.com/"
+# ENDPOINT: str = "https://data-mining-from-scratch-backend.onrender.com/"
+
+ENDPOINT: str = "http://127.0.0.1:5000/"
 
 request_params = {
     "algorithm": "neural-network",

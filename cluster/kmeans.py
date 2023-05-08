@@ -61,6 +61,6 @@ class Kmeans(Clusterer):
         return {
             "k": self.k,
             "max_iter": self.max_iter,
-            "centroids": self.centroids,
-            "clusters": self.clusters,
+            "centroids": self.centroids.tolist(),
+            "clusters": self.clusters.tolist(),
         }

@@ -1,4 +1,3 @@
-from sklearn.model_selection import train_test_split
 import numpy as np
 
 from cluster.clusterer import Clusterer
@@ -11,9 +10,11 @@ def main(
     y: np.array,
     args: dict,
 ) -> dict:
-    cluster_alg: Clusterer = clustering_methods[args["algorithm"]]
+    cluster_func = args.pop("algorithm")
+    cluster_alg: Clusterer = clustering_methods[cluster_func]
 
-    alg = cluster_alg.from_dict(args)
+    cluster_args: dict = {"cluster_func": cluster_func} | args
+    alg = cluster_alg.from_dict(cluster_args)
+
     alg.build(X)
-
     return alg.to_dict()

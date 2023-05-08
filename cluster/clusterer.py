@@ -7,7 +7,6 @@ import numpy as np
 @dataclass
 class Clusterer:
     cluster_func: Callable
-    options: dict
 
     def eval(
         self,
@@ -19,9 +18,3 @@ class Clusterer:
     @classmethod
     def from_dict(cls, dct: dict):
         return cls(**dct)
-
-    def to_dict(self):
-        return {
-            "cluster_method": self.cluster_func.__name__,
-            "options": self.options,
-        }
