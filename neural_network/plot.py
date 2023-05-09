@@ -17,5 +17,6 @@ def plot(model: NeuralNetwork) -> None:
     )
     buf = io.BytesIO() 
     fig.savefig(buf, format="png")
+    plt.close(fig)
     plot_data = base64.b64encode(buf.getvalue()).decode("utf-8")
     model.plot = plot_data
