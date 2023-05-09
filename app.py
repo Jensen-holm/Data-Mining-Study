@@ -27,8 +27,10 @@ def not_valid(params: dict):
     return False
 
 
-@app.route("/", methods=["POST"])
+@app.route("/", methods=["POST", "GET"])
 def index():
+    if request.method == "GET":
+        return render_template("index.html")
 
     error_message = not_valid(params=request.json)
     if error_message:
