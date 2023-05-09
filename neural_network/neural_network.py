@@ -19,6 +19,7 @@ class NeuralNetwork:
     loss_history: list = field(
         default_factory=lambda: [],
     )
+    plot = None
 
     def predict(self, x: np.array) -> np.array:
         n1 = self.compute_node(x, self.w1, self.b1, self.activation_func)
@@ -51,4 +52,5 @@ class NeuralNetwork:
             "hidden_size": self.hidden_size,
             "mse": self.mse,
             "loss_history": self.loss_history,
+            "plot": self.plot,
         }
