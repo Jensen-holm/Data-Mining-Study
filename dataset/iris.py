@@ -1,9 +1,7 @@
 from sklearn.datasets import load_iris
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
-import numpy as np
 
-
-def iris() -> tuple[np.array]:
+def iris():
     """
     returns a tuple of numpy arrays containing the
     iris dataset split into training and testing sets
