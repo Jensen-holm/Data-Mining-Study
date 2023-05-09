@@ -1,4 +1,3 @@
-from cluster.clusterer import Clusterer
 from cluster.kmedoids import Kmedoids
 from cluster.kmeans import Kmeans
 

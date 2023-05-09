@@ -14,8 +14,8 @@ def main(
     cluster_func = args.pop("algorithm")
     cluster_alg: Clusterer = clustering_methods[cluster_func]
 
-    cluster_args: dict = {"cluster_func": cluster_func}.update(args)
-    alg = cluster_alg.from_dict(cluster_args)
+    args.update({"cluster_func": cluster_func})
+    alg = cluster_alg.from_dict(args)
 
     alg.build(X)
     plot(clusterer=alg, X=X)

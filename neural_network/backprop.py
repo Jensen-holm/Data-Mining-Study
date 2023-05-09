@@ -24,7 +24,8 @@ def bp(
     wb: dict,
     args: dict,
 ) -> NeuralNetwork:
-    model = NeuralNetwork.from_dict(args.update(wb))
+    args.update(wb)
+    model = NeuralNetwork.from_dict(args)
     loss_history = []
     for _ in range(model.epochs):
         # forward prop
