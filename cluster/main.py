@@ -3,6 +3,7 @@ import numpy as np
 from cluster.clusterer import Clusterer
 # for determing which clustering funciton to call
 from cluster.opts import clustering_methods
+from cluster.plot import plot
 
 
 def main(
@@ -17,4 +18,5 @@ def main(
     alg = cluster_alg.from_dict(cluster_args)
 
     alg.build(X)
+    plot(clusterer=alg, X=X)
     return alg.to_dict(X)

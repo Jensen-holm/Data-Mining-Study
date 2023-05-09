@@ -51,6 +51,8 @@ class NeuralNetwork:
             "func_prime": self.func_prime.__name__,
             "hidden_size": self.hidden_size,
             "mse": self.mse,
-            "loss_history": self.loss_history,
+            # not returning this because we are making our own
+            # plots and this can be a lot of data
+            # "loss_history": self.loss_history,
             "plot": self.plot,
         }

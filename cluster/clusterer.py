@@ -7,6 +7,7 @@ import numpy as np
 @dataclass
 class Clusterer:
     cluster_func: Callable
+    plot = None
 
     def eval(
         self,
