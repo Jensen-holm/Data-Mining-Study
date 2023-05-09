@@ -9,12 +9,16 @@ from neural_network.neural_network import NeuralNetwork
 matplotlib.use("Agg")
 
 def plot(model: NeuralNetwork) -> None:
+    sns.set()
     fig, ax = plt.subplots()
-    sns.scatterplot(
+    sns.lineplot(
         x=np.arange(len(model.loss_history)),
         y=model.loss_history,
         ax=ax,
     )
+    plt.ylabel("Loss")
+    plt.xlabel("Epoch")
+    plt.title("Loss / Epoch")
     buf = io.BytesIO() 
     fig.savefig(buf, format="png")
     plt.close(fig)
