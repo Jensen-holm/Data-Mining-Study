@@ -9,13 +9,13 @@ from neural_network.neural_network import NeuralNetwork
 matplotlib.use("Agg")
 
 def plot(model: NeuralNetwork) -> None:
-    _ = sns.scatterplot(
+    fig, ax = plt.subplots()
+    sns.scatterplot(
         x=np.arange(len(model.loss_history)),
         y=model.loss_history,
+        ax=ax,
     )
     buf = io.BytesIO() 
-    plt.savefig(buf, format="svg")
-    plt.clf()
-    buf.seek(0)
+    fig.savefig(buf, format="svg")
     plot_data = base64.b64encode(buf.getvalue()).decode("utf-8")
     model.plot = plot_data
