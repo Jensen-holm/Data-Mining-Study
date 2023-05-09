@@ -14,7 +14,7 @@ def main(
     cluster_func = args.pop("algorithm")
     cluster_alg: Clusterer = clustering_methods[cluster_func]
 
-    cluster_args: dict = {"cluster_func": cluster_func} | args
+    cluster_args: dict = {"cluster_func": cluster_func}.update(args)
     alg = cluster_alg.from_dict(cluster_args)
 
     alg.build(X)
