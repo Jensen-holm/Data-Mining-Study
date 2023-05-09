@@ -6,7 +6,7 @@ from neural_network.backprop import bp
 from neural_network.plot import plot
 
 
-def init(X: np.array, hidden_size: int) -> dict:
+def init(X: np.array, hidden_size: int):
     """
     returns a dictionary containing randomly initialized
     weights and biases to start off the neural_network

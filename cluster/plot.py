@@ -4,13 +4,12 @@ import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt 
 import seaborn as sns
-from cluster.clusterer import Clusterer
 
 
 matplotlib.use("Agg")
 sns.set()
 
-def plot(clusterer: Clusterer, X: np.array) -> None:
+def plot(clusterer, X) -> None:
     cluster_data = clusterer.to_dict(X)["clusters"]
     # plot the clusters and data points
     fig, ax = plt.subplots(figsize=(8, 6))
@@ -36,7 +35,7 @@ def plot(clusterer: Clusterer, X: np.array) -> None:
     clusterer.plot = plt_bytes(fig)
 
 
-def plt_bytes(fig) -> str:
+def plt_bytes(fig):
     buf = io.BytesIO()
     fig.savefig(buf, format="png")
     plt.close(fig)

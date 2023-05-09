@@ -1,8 +1,6 @@
 from dataclasses import dataclass
 from typing import Callable
 
-import numpy as np
-
 
 @dataclass
 class Clusterer:
@@ -11,8 +9,8 @@ class Clusterer:
 
     def eval(
         self,
-        pred_labels: np.array,
-        true_labels: np.array,
+        pred_labels,
+        true_labels,
     ) -> None:
         ...
 

@@ -7,7 +7,7 @@ import numpy as np
 def euclidean(
     point: np.array,
     data: np.array,
-) -> np.array:
+):
     """
     Computed the euclidean distance
     between a point and the rest 

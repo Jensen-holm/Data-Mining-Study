@@ -4,11 +4,10 @@ import io
 import seaborn as sns
 import matplotlib
 import matplotlib.pyplot as plt
-from neural_network.neural_network import NeuralNetwork
 
 matplotlib.use("Agg")
 
-def plot(model: NeuralNetwork) -> None:
+def plot(model) -> None:
     sns.set()
     fig, ax = plt.subplots()
     sns.lineplot(
