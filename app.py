@@ -9,7 +9,7 @@ app = Flask(
     template_folder="templates",
 )
 
-CORS(app)
+CORS(app, origins="*")
 
 
 def not_valid(params: dict):
@@ -29,8 +29,6 @@ def not_valid(params: dict):
 
 @app.route("/", methods=["POST"])
 def index():
-    if request.method == "GET":
-        return render_template("index.html")
 
     error_message = not_valid(params=request.json)
     if error_message:
