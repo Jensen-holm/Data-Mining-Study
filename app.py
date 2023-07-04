@@ -13,7 +13,7 @@ app = Flask(
 )
 
 CORS(
-    app=app,
+    app,
     origins="*",
 )
 
@@ -23,9 +23,8 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/neural-network", methods=["POST", "GET"])
+@app.route("/neural-network", methods=["POST"])
 def neural_network():
-    # parse arguments
     algorithm = options["neural-network"]
     args = request.json["arguments"]
 
