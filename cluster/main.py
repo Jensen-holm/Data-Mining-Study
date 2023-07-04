@@ -1,7 +1,6 @@
 import numpy as np
 
 from cluster.clusterer import Clusterer
-# for determing which clustering funciton to call
 from cluster.opts import clustering_methods
 from cluster.plot import plot
 

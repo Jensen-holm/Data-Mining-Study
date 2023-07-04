@@ -13,7 +13,6 @@ import requests
 import json
 
 request_params = {
-    "algorithm": "neural-network",
     "arguments": {
         "epochs": 100,
         "activation_func": "tanh",
@@ -27,7 +26,7 @@ headers = {
 }
 
 r = requests.post(
-    "https://data-mining-from-scratch-backend.onrender.com/",
+    "https://data-mining-from-scratch-backend.onrender.com/neural-network",
     headers=headers,
     data=json.dumps(request_params),
 )
@@ -38,7 +37,7 @@ print(model_data)
 
 ### Parameter Options
 
-- Algorithm: <br>
+- End Points: <br>
 
   -`"neural-network"` <br>
 
