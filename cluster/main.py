@@ -9,12 +9,12 @@ from cluster.plot import plot
 def main(
     X: np.array,
     y: np.array,
+    clusterer: str,
     args: dict,
 ) -> dict:
-    cluster_func = args.pop("algorithm")
-    cluster_alg: Clusterer = clustering_methods[cluster_func]
+    cluster_alg: Clusterer = clustering_methods[clusterer]
 
-    args.update({"cluster_func": cluster_func})
+    args.update({"cluster_func": cluster_alg})
     alg = cluster_alg.from_dict(args)
 
     alg.build(X)
