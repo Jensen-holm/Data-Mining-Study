@@ -8,13 +8,11 @@ import os
 matplotlib.use("Agg")
 sns.set()
 
-# Replace with the desired upload folder path
-UPLOAD_FOLDER = "/plot"
+UPLOAD_FOLDER = "/plots"
 
 
 def plot(clusterer, X) -> None:
     cluster_data = clusterer.to_dict(X)["clusters"]
-    # plot the clusters and data points
     fig, ax = plt.subplots(figsize=(8, 6))
     for cluster in cluster_data:
         sns.scatterplot(
@@ -36,9 +34,8 @@ def plot(clusterer, X) -> None:
     ax.set_ylabel("Normalized Petal Length (cm)")
     ax.set_xlabel("Normalized Petal Length (cm)")
 
-    image_key = generate_image_key()  # Generate a unique key for the image
+    image_key = generate_image_key()
 
-    # Save the plot as an image file with the key in the filename
     plot_filename = os.path.join(UPLOAD_FOLDER, f"{image_key}.png")
     fig.savefig(plot_filename, format="png")
     plt.close(fig)
