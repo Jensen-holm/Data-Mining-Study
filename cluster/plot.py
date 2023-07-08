@@ -8,7 +8,7 @@ import os
 matplotlib.use("Agg")
 sns.set()
 
-UPLOAD_FOLDER = "/plots"
+UPLOAD_FOLDER = os.path + "/plots"
 
 
 def plot(clusterer, X) -> None:
