@@ -30,7 +30,9 @@ def get_plot(plt_key):
     filepath = os.path.join(UPLOAD_FOLDER, filename)
 
     if os.path.isfile(filepath):
-        return send_file(filepath, mimetype='image/png')
+        with open(filepath, "rb") as file:
+            plot_bytes = file.read()
+        return plot_bytes, 200, {"Content-Type": "image/png"}
     else:
         return "Plot not found", 404
 
