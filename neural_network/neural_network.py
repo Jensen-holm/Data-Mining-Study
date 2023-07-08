@@ -54,5 +54,5 @@ class NeuralNetwork:
             # not returning this because we are making our own
             # plots and this can be a lot of data
             # "loss_history": self.loss_history,
-            "plot_id": self.plot_id,
+            "plot_key": self.plot_key,
         }
