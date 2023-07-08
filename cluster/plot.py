@@ -9,7 +9,7 @@ matplotlib.use("Agg")
 sns.set()
 
 # Replace with the desired upload folder path
-UPLOAD_FOLDER = '/path/to/upload/folder'
+UPLOAD_FOLDER = "/plot"
 
 
 def plot(clusterer, X) -> None:
