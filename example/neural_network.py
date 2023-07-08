@@ -4,10 +4,9 @@ import requests
 import json
 
 
-ENDPOINT: str = "http://127.0.0.1:5000/"
+ENDPOINT: str = "http://127.0.0.1:5000/neural-network"
 
 request_params = {
-    "algorithm": "neural-network",
     "arguments": {
         "epochs": 100,
         "activation_func": "tanh",

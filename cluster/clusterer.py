@@ -5,7 +5,7 @@ from typing import Callable
 @dataclass
 class Clusterer:
     cluster_func: Callable
-    plot = None
+    plot_key = None
 
     def eval(
         self,

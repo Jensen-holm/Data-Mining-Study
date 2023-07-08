@@ -19,7 +19,7 @@ class NeuralNetwork:
     loss_history: list = field(
         default_factory=lambda: [],
     )
-    plot = None
+    plot_key = None
 
     def predict(self, x: np.array) -> np.array:
         n1 = self.compute_node(x, self.w1, self.b1, self.activation_func)
@@ -54,5 +54,5 @@ class NeuralNetwork:
             # not returning this because we are making our own
             # plots and this can be a lot of data
             # "loss_history": self.loss_history,
-            "plot": self.plot,
+            "plot_id": self.plot_id,
         }

@@ -1,13 +1,16 @@
-import io
-import base64
-import numpy as np
 import matplotlib
-import matplotlib.pyplot as plt 
+import matplotlib.pyplot as plt
 import seaborn as sns
+from plt_id import generate_image_key
+import os
 
 
 matplotlib.use("Agg")
 sns.set()
+
+# Replace with the desired upload folder path
+UPLOAD_FOLDER = '/path/to/upload/folder'
+
 
 def plot(clusterer, X) -> None:
     cluster_data = clusterer.to_dict(X)["clusters"]
@@ -32,11 +35,12 @@ def plot(clusterer, X) -> None:
     ax.set_title("K-means Clustering")
     ax.set_ylabel("Normalized Petal Length (cm)")
     ax.set_xlabel("Normalized Petal Length (cm)")
-    clusterer.plot = plt_bytes(fig)
 
+    image_key = generate_image_key()  # Generate a unique key for the image
 
-def plt_bytes(fig):
-    buf = io.BytesIO()
-    fig.savefig(buf, format="png")
+    # Save the plot as an image file with the key in the filename
+    plot_filename = os.path.join(UPLOAD_FOLDER, f"{image_key}.png")
+    fig.savefig(plot_filename, format="png")
     plt.close(fig)
-    return base64.b64encode(buf.getvalue()).decode("utf-8")
+
+    clusterer.plot_key = image_key

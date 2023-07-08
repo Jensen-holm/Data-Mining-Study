@@ -74,5 +74,5 @@ class Kmeans(Clusterer):
             "k": self.k,
             "max_iter": self.max_iter,
             "clusters": cluster_data,
-            "plot": self.plot,
+            "plot_key": self.plot_key,
         }

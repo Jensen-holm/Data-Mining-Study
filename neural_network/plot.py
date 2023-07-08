@@ -1,11 +1,14 @@
 import numpy as np
-import base64
-import io
 import seaborn as sns
 import matplotlib
 import matplotlib.pyplot as plt
+from plt_id import generate_image_key
+import os
 
 matplotlib.use("Agg")
+
+UPLOAD_FOLDER = "/plots"
+
 
 def plot(model) -> None:
     sns.set()
@@ -18,8 +21,11 @@ def plot(model) -> None:
     plt.ylabel("Loss")
     plt.xlabel("Epoch")
     plt.title("Loss / Epoch")
-    buf = io.BytesIO() 
-    fig.savefig(buf, format="png")
+
+    image_key = generate_image_key()
+
+    plot_filename = os.path.join(UPLOAD_FOLDER, f"{image_key}.png")
+    fig.savefig(plot_filename, format="png")
     plt.close(fig)
-    plot_data = base64.b64encode(buf.getvalue()).decode("utf-8")
-    model.plot = plot_data
+
+    model.plot_key = image_key

@@ -12,10 +12,7 @@ app = Flask(
     template_folder="templates",
 )
 
-CORS(
-    app,
-    origins="*",
-)
+CORS(app, origins="*")
 
 
 @app.route("/", methods=["GET"])
