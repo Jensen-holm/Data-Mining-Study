@@ -7,7 +7,7 @@ import os
 
 matplotlib.use("Agg")
 
-UPLOAD_FOLDER = os.path + "/plots"
+UPLOAD_FOLDER = os.getcwd() + "/plots"
 
 
 def plot(model) -> None:
