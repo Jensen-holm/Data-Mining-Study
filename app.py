@@ -1,8 +1,10 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_file
 from flask_cors import CORS
 
 from dataset.iris import iris
 from opts import options
+
+import os
 
 # using the iris data set for every algorithm
 X, y = iris()
@@ -14,10 +16,23 @@ app = Flask(
 
 CORS(app, origins="*")
 
+UPLOAD_FOLDER = os.getcwd() + "/plots"
+
 
 @app.route("/", methods=["GET"])
 def index():
     return render_template("index.html")
+
+
+@app.route("/plots/<plt_key>", methods=["GET"])
+def get_plot(plt_key):
+    filename = f"{plt_key}.png"
+    filepath = os.path.join(UPLOAD_FOLDER, filename)
+
+    if os.path.isfile(filepath):
+        return send_file(filepath, mimetype='image/png')
+    else:
+        return "Plot not found", 404
 
 
 @app.route("/neural-network", methods=["POST"])
