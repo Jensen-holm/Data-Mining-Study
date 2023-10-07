@@ -5,7 +5,6 @@ import seaborn as sns
 from typing import Callable
 import numpy as np
 import base64
-import binascii
 import io
 
 sns.set()
@@ -59,7 +58,7 @@ class NeuralNetwork:
         plt.savefig(buffer, format='png')
         buffer.seek(0)
         plt_data = buffer.read()
-        plt_data_encoded = binascii.hexlify(plt_data).decode('utf-8')
+        plt_data_encoded = base64.b64encode(plt_data).decode('utf-8')
         self.set_plot_data(plt_data_encoded)
         plt.close()
 
