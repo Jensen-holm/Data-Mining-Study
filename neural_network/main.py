@@ -3,7 +3,6 @@ import numpy as np
 
 from neural_network.opts import activation
 from neural_network.backprop import bp
-from neural_network.plot import plot
 
 
 def init(X: np.array, hidden_size: int):
@@ -19,7 +18,7 @@ def init(X: np.array, hidden_size: int):
     }
 
 
-def main( 
+def main(
     X: np.array,
     y: np.array,
     args,
@@ -48,6 +47,5 @@ def main(
         y_test=y_test,
     )
 
-    plot(model=model)
-
+    model.plot()
     return model.to_dict()

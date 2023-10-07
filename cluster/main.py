@@ -17,5 +17,6 @@ def main(
     alg = cluster_alg.from_dict(args)
 
     alg.build(X)
-    plot(clusterer=alg, X=X)
+    plt_data = plot(clusterer=alg, X=X)
+    alg.set_plot_data(plt_data)
     return alg.to_dict(X)

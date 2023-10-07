@@ -1,5 +1,3 @@
-import matplotlib.pyplot as plt
-import seaborn as sns
 import requests
 import json
 
@@ -25,17 +23,5 @@ r = requests.post(
     data=json.dumps(request_params),
 )
 
-model = r.json()
-
-
-def plot():
-    sns.set()
-    plt.plot(model["loss_history"])
-    plt.xlabel("Epoch")
-    plt.ylabel("Loss")
-    plt.title("Loss History")
-    plt.show()
-
-
 if __name__ == "__main__":
-    plot()
+    print(r.json()["plt_data"])

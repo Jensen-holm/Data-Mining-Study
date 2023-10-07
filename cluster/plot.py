@@ -1,18 +1,14 @@
 import matplotlib
 import matplotlib.pyplot as plt
 import seaborn as sns
-from plt_id import generate_image_key
-import os
+import io
 
 
 matplotlib.use("Agg")
 sns.set()
 
-UPLOAD_FOLDER = os.getcwd() + "/plots"
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-
-def plot(clusterer, X) -> None:
+def plot(clusterer, X):
     cluster_data = clusterer.to_dict(X)["clusters"]
     fig, ax = plt.subplots(figsize=(8, 6))
     for cluster in cluster_data:
@@ -35,10 +31,9 @@ def plot(clusterer, X) -> None:
     ax.set_ylabel("Normalized Petal Length (cm)")
     ax.set_xlabel("Normalized Petal Length (cm)")
 
-    image_key = generate_image_key()
+    # Save the plot to a BytesIO buffer
+    buffer = io.BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
 
-    plot_filename = os.path.join(UPLOAD_FOLDER, f"{image_key}.png")
-    fig.savefig(plot_filename, format="png")
-    plt.close(fig)
-
-    clusterer.plot_key = image_key
+    return buffer.read()
