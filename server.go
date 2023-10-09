@@ -1,9 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"strings"
 
+	"github.com/Jensen-holm/ml-from-scratch/alg"
+	"github.com/Jensen-holm/ml-from-scratch/nn"
 	"github.com/Jensen-holm/ml-from-scratch/request"
 	"github.com/go-gota/gota/dataframe"
 	"github.com/gofiber/fiber/v2"
@@ -11,6 +12,10 @@ import (
 
 func main() {
 	app := fiber.New()
+
+	algMap := map[string]alg.Alg{
+		"neural_network": nn.NN,
+	}
 
 	app.Post("/", func(c *fiber.Ctx) error {
 		r := new(request.Payload)
@@ -25,7 +30,8 @@ func main() {
 		df := dataframe.ReadCSV(strings.NewReader(r.CSVData))
 		r.SetDf(df)
 
-		fmt.Println(r.Df)
+		a := algMap[r.Algorithm]
+		a.New(r)
 
 		return c.SendString("No error")
 	})

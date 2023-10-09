@@ -8,15 +8,13 @@ import (
 )
 
 type Payload struct {
-	CSVData        string   `json:"csv_data"`
-	Features       []string `json:"features"`
-	Target         string   `json:"target"`
-	Epochs         int      `json:"epochs"`
-	HiddenSize     int      `json:"hidden_size"`
-	LearningRate   float64  `json:"learning_rate"`
-	ActivationFunc string   `json:"activation_func"`
+	CSVData   string   `json:"csv_data"`
+	Features  []string `json:"features"`
+	Target    string   `json:"target"`
+	Algorithm string   `json:"algorithm"`
 
-	Df dataframe.DataFrame
+	Args map[string]interface{} `json:"args"`
+	Df   dataframe.DataFrame
 }
 
 func (p *Payload) SetDf(df dataframe.DataFrame) {
