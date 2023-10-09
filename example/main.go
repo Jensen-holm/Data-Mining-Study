@@ -9,13 +9,11 @@ import (
 )
 
 type RequestPayload struct {
-	CSVData        string   `json:"csv_data"`
-	Features       []string `json:"features"`
-	Target         string   `json:"target"`
-	Epochs         int      `json:"epochs"`
-	HiddenSize     int      `json:"hidden_size"`
-	LearningRate   float64  `json:"learning_rate"`
-	ActivationFunc string   `json:"activation_func"`
+	CSVData   string   `json:"csv_data"`
+	Features  []string `json:"features"`
+	Target    string   `json:"target"`
+	Algorithm string   `json:"algorithm"`
+	Args      map[string]interface{}
 }
 
 func main() {
@@ -30,19 +28,18 @@ func main() {
 	csvString := string(csvBytes)
 	features := []string{"petal length", "sepal length", "sepal width", "petal width"}
 	target := "species"
-	epochs := 100
-	hiddenSize := 8
-	learningRate := 0.1
-	activationFunc := "tanh"
+	args := map[string]interface{}{
+		"epochs":        100,
+		"hidden_size":   8,
+		"learning_rate": 0.1,
+		"activation":    "tanh",
+	}
 
 	payload := RequestPayload{
-		CSVData:        csvString,
-		Features:       features,
-		Target:         target,
-		Epochs:         epochs,
-		HiddenSize:     hiddenSize,
-		LearningRate:   learningRate,
-		ActivationFunc: activationFunc,
+		CSVData:  csvString,
+		Features: features,
+		Target:   target,
+		Args:     args,
 	}
 
 	jsonPayload, err := json.Marshal(payload)
