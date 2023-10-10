@@ -3,11 +3,11 @@ package nn
 import (
 	"math"
 	"math/rand"
+
+	"github.com/go-gota/gota/dataframe"
 )
 
-// implement train test split function
-
-func (nn *NN) trainTestSplit() {
+func (nn *NN) trainTestSplit() (dataframe.DataFrame, dataframe.DataFrame, dataframe.DataFrame, dataframe.DataFrame) {
 	// now we split the data into training
 	// and testing based on user specified
 	// nn.TestSize.
@@ -31,8 +31,10 @@ func (nn *NN) trainTestSplit() {
 	// Create the train DataFrame using the trainIndices
 	train := nn.Df.Subset(trainIndices)
 
-	nn.XTrain = train.Select(nn.Features)
-	nn.YTrain = train.Select(nn.Target)
-	nn.XTest = test.Select(nn.Features)
-	nn.YTest = test.Select(nn.Target)
+	XTrain = train.Select(nn.Features)
+	YTrain = train.Select(nn.Target)
+	XTest = test.Select(nn.Features)
+	YTest = test.Select(nn.Target)
+
+	return XTrain, XTest, YTrain, YTest
 }
