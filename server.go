@@ -12,7 +12,7 @@ func main() {
 	// that we will be able to validate.
 	app.Post("/neural-network", func(c *fiber.Ctx) error {
 
-		nn, err := nn.NewNN(c)
+		_, err := nn.NewNN(c)
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 				"error": err,

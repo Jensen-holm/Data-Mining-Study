@@ -9,37 +9,39 @@ import (
 )
 
 type RequestPayload struct {
-	CSVData   string   `json:"csv_data"`
-	Features  []string `json:"features"`
-	Target    string   `json:"target"`
-	Algorithm string   `json:"algorithm"`
-	Args      map[string]interface{}
+	CSVData        string   `json:"csv_data"`
+	Features       []string `json:"features"`
+	Target         string   `json:"target"`
+	Epochs         int      `json:"epochs"`
+	LearningRate   float64  `json:"learning_rate"`
+	HiddenSize     int      `json:"hidden_size"`
+	ActivationFunc string   `json:"activation"`
 }
 
 func main() {
-	filePath := "iris.csv"
-
-	csvBytes, err := ioutil.ReadFile(filePath)
+	csvBytes, err := ioutil.ReadFile("iris.csv")
 	if err != nil {
 		fmt.Println("Error reading CSV file: ", err)
 		return
 	}
 
 	csvString := string(csvBytes)
-	features := []string{"petal length", "sepal length", "sepal width", "petal width"}
 	target := "species"
-	args := map[string]interface{}{
-		"epochs":        100,
-		"hidden_size":   8,
-		"learning_rate": 0.1,
-		"activation":    "tanh",
+	features := []string{
+		"petal length",
+		"sepal length",
+		"sepal width",
+		"petal width",
 	}
 
 	payload := RequestPayload{
-		CSVData:  csvString,
-		Features: features,
-		Target:   target,
-		Args:     args,
+		CSVData:        csvString,
+		Features:       features,
+		Target:         target,
+		Epochs:         100,
+		LearningRate:   0.01,
+		HiddenSize:     12,
+		ActivationFunc: "tanh",
 	}
 
 	jsonPayload, err := json.Marshal(payload)
@@ -48,7 +50,7 @@ func main() {
 	}
 
 	r, err := http.Post(
-		"http://127.0.0.1:3000/",
+		"http://127.0.0.1:3000/neural-network",
 		"application/json",
 		bytes.NewBuffer(jsonPayload),
 	)
