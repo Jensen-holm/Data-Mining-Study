@@ -16,7 +16,13 @@ type NN struct {
 	HiddenSize     int      `json:"hidden_size"`
 	LearningRate   float64  `json:"learning_rate"`
 	ActivationFunc string   `json:"activation"`
-	Df             dataframe.DataFrame
+	TestSize       float64  `json:"test_size"`
+
+	Df     *dataframe.DataFrame
+	XTrain dataframe.DataFrame
+	YTrain dataframe.DataFrame
+	XTest  dataframe.DataFrame
+	YTest  dataframe.DataFrame
 }
 
 func NewNN(c *fiber.Ctx) (*NN, error) {
@@ -25,6 +31,16 @@ func NewNN(c *fiber.Ctx) (*NN, error) {
 	if err != nil {
 		return nil, fmt.Errorf("invalid JSON data: %v", err)
 	}
-	newNN.Df = dataframe.ReadCSV(strings.NewReader(newNN.CSVData))
+	df := dataframe.ReadCSV(strings.NewReader(newNN.CSVData))
+	newNN.Df = &df
 	return newNN, nil
+}
+
+func (nn *NN) Train() {
+	// train test split the data
+
+	// iterate n times where n = nn.Epochs
+	// use backprop algorithm on each iteration
+	// to fit the model to the data
+
 }
