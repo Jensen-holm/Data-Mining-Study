@@ -45,8 +45,8 @@ def train(nn: NN) -> dict:
         )
         # compute error & store it
         error = y_hat - y_train
-        mse = mean_squared_error(y=y_train, y_hat=y_hat)
-        loss_hist.append(mse)
+        loss = log_loss(y_true=y_train, y_pred=y_hat)
+        loss_hist.append(loss)
 
         # compute derivatives of weights & biases
         # update weights & biases using gradient descent after
@@ -81,8 +81,9 @@ def train(nn: NN) -> dict:
     )
 
     return {
-        "log loss": log_loss(y_true=y_test, y_pred=y_hat),
-        "accuracy": accuracy_score(y_true=y_test, y_pred=y_hat)
+        "loss_hist": loss_hist,
+        "log_loss": log_loss(y_true=y_test, y_pred=y_hat),
+        "accuracy": accuracy_score(y_true=y_test, y_pred=y_hat),
     }
 
 
