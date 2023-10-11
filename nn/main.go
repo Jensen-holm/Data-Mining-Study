@@ -7,7 +7,6 @@ import (
 
 	"github.com/go-gota/gota/dataframe"
 	"github.com/gofiber/fiber/v2"
-	"gonum.org/v1/gonum/mat"
 )
 
 type NN struct {
@@ -25,6 +24,10 @@ type NN struct {
 	YTrain dataframe.DataFrame
 	XTest  dataframe.DataFrame
 	YTest  dataframe.DataFrame
+	Wh     [][]float64
+	Bh     []float64
+	Wo     [][]float64
+	Bo     []float64
 }
 
 func NewNN(c *fiber.Ctx) (*NN, error) {
@@ -40,13 +43,15 @@ func NewNN(c *fiber.Ctx) (*NN, error) {
 
 func (nn *NN) Train() {
 	// train test split the data
-	XTrain, XTest, YTrain, YTest := nn.trainTestSplit()
+	_, _, _, _ = nn.trainTestSplit()
 
-	weights, biases := nn.InitWnB()
+	nn.InitWnB()
 
 	// iterate n times where n = nn.Epochs
 	// use backprop algorithm on each iteration
 	// to fit the model to the data
+	for i := 0; i < nn.Epochs; i++ {
+	}
 
 }
 
@@ -54,31 +59,38 @@ func (nn *NN) InitWnB() {
 	// randomly initialize weights and biases to start
 	inputSize := len(nn.Features)
 	hiddenSize := nn.HiddenSize
-	outputSize := 1 // only predicting one thing for now
+	outputSize := 1 // only predicting one thing
 
-	// Initialize weights and biases for the input layer to hidden layer
-	weightsInputHidden := mat.NewDense(inputSize, hiddenSize, nil)
-	weightsInputHidden.Apply(func(_, _ int, v float64) float64 {
-		// Randomly initialize weights with values between -1 and 1
-		return rand.Float64()*2 - 1
-	}, weightsInputHidden)
+	// input hidden layer weights
+	wh := make([][]float64, inputSize)
+	for i := range wh {
+		wh[i] = make([]float64, hiddenSize)
+		for j := range wh[i] {
+			wh[i][j] = rand.Float64() - 0.5
+		}
+	}
 
-	biasesHidden := mat.NewVecDense(hiddenSize, nil)
-	biasesHidden.Apply(func(_, _ int, v float64) float64 {
-		// Randomly initialize biases
-		return rand.Float64()
-	}, biasesHidden)
+	bh := make([]float64, hiddenSize)
+	for i := range bh {
+		bh[i] = rand.Float64() - 0.5
+	}
 
-	// Initialize weights and biases for the hidden layer to output layer
-	weightsHiddenOutput := mat.NewDense(hiddenSize, outputSize, nil)
-	weightsHiddenOutput.Apply(func(_, _ int, v float64) float64 {
-		// Randomly initialize weights with values between -1 and 1
-		return rand.Float64()*2 - 1
-	}, weightsHiddenOutput)
+	// initialize weights and biases for hidden -> output layer
+	wo := make([][]float64, hiddenSize)
+	for i := range wo {
+		wo[i] = make([]float64, outputSize)
+		for j := range wo[i] {
+			wo[i][j] = rand.Float64() - 0.5
+		}
+	}
 
-	biasesOutput := mat.NewVecDense(outputSize, nil)
-	biasesOutput.Apply(func(_, _ int, v float64) float64 {
-		// Randomly initialize biases
-		return rand.Float64()
-	}, biasesOutput)
+	bo := make([]float64, outputSize)
+	for i := range bo {
+		bo[i] = rand.Float64() - 0.5
+	}
+
+	nn.Wh = wh
+	nn.Bh = bh
+	nn.Wo = wo
+	nn.Bo = bo
 }

@@ -31,10 +31,10 @@ func (nn *NN) trainTestSplit() (dataframe.DataFrame, dataframe.DataFrame, datafr
 	// Create the train DataFrame using the trainIndices
 	train := nn.Df.Subset(trainIndices)
 
-	XTrain = train.Select(nn.Features)
-	YTrain = train.Select(nn.Target)
-	XTest = test.Select(nn.Features)
-	YTest = test.Select(nn.Target)
+	XTrain := train.Select(nn.Features)
+	YTrain := train.Select(nn.Target)
+	XTest := test.Select(nn.Features)
+	YTest := test.Select(nn.Target)
 
 	return XTrain, XTest, YTrain, YTest
 }

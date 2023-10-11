@@ -16,6 +16,7 @@ type RequestPayload struct {
 	LearningRate   float64  `json:"learning_rate"`
 	HiddenSize     int      `json:"hidden_size"`
 	ActivationFunc string   `json:"activation"`
+	TestSize       float64  `json:"test_size"`
 }
 
 func main() {
@@ -42,6 +43,7 @@ func main() {
 		LearningRate:   0.01,
 		HiddenSize:     12,
 		ActivationFunc: "tanh",
+		TestSize:       0.3,
 	}
 
 	jsonPayload, err := json.Marshal(payload)

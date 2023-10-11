@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/Jensen-holm/ml-from-scratch/nn"
 	"github.com/gofiber/fiber/v2"
 )
@@ -12,12 +14,15 @@ func main() {
 	// that we will be able to validate.
 	app.Post("/neural-network", func(c *fiber.Ctx) error {
 
-		_, err := nn.NewNN(c)
+		nn, err := nn.NewNN(c)
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 				"error": err,
 			})
 		}
+
+		nn.Train()
+		fmt.Println(nn.Wo)
 
 		return c.SendString("No error")
 	})
