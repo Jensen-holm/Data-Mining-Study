@@ -1,6 +1,5 @@
 from typing import Callable
 import pandas as pd
-import numpy as np
 
 
 class NN:
@@ -24,10 +23,7 @@ class NN:
         self.target = target
         self.data = data
 
-        self.wh: np.array = None
-        self.wo: np.array = None
-        self.bh: np.array = None
-        self.bo: np.array = None
+        self.loss_hist: list[float] = None
         self.func_prime: Callable = None
         self.func: Callable = None
         self.df: pd.DataFrame = None
@@ -51,18 +47,6 @@ class NN:
     def set_func_prime(self, f: Callable) -> None:
         assert isinstance(f, Callable)
         self.func_prime = f
-
-    def set_bh(self, bh: np.array) -> None:
-        self.bh = bh
-
-    def set_wh(self, wh: np.array) -> None:
-        self.wh = wh
-
-    def set_bo(self, bo: np.array) -> None:
-        self.bo = bo
-
-    def set_wo(self, wo: np.array) -> None:
-        self.wo = wo
 
     @classmethod
     def from_dict(cls, dct):

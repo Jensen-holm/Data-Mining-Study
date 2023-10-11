@@ -26,7 +26,10 @@ def relu(x):
 
 
 def relu_prime(x):
-    return
+    if x > 0:
+        return 1
+    else:
+        return 0
 
 
 def sigmoid(x):
@@ -43,4 +46,4 @@ def tanh(x):
 
 
 def tanh_prime(x):
-    return
+    return 1 - np.tanh(x)**2

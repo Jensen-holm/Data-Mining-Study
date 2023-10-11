@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify, Response
-
 from nn.nn import NN
 from nn import train as train_nn
 from nn import activation
