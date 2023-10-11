@@ -7,10 +7,11 @@ ARGS = {
     "epochs": 100,
     "hidden_size": 12,
     "learning_rate": 0.01,
+    "test_size": 0.3,
     "activation": "tanh",
     "features": ["sepal width", "sepal length", "petal width", "petal length"],
     "target": "species",
-    "data": iris_data.decode('utf-8'),
+    "data": iris_data.decode("utf-8"),
 }
 
 r = requests.post(
