@@ -7,6 +7,7 @@ import (
 
 	"github.com/go-gota/gota/dataframe"
 	"github.com/gofiber/fiber/v2"
+	"gonum.org/v1/gonum/mat"
 )
 
 type NN struct {
@@ -23,14 +24,14 @@ type NN struct {
 	// attributes set after args above are parsed
 	ActivationFunc *func(float64) float64
 	Df             *dataframe.DataFrame
-	XTrain         *dataframe.DataFrame
-	YTrain         *dataframe.DataFrame
-	XTest          *dataframe.DataFrame
-	YTest          *dataframe.DataFrame
-	Wh             *[][]float64
-	Bh             *[]float64
-	Wo             *[][]float64
-	Bo             *[]float64
+	XTrain         *mat.Dense
+	YTrain         *mat.Dense
+	XTest          *mat.Dense
+	YTest          *mat.Dense
+	Wh             *mat.Dense
+	Bh             *mat.Dense
+	Wo             *mat.Dense
+	Bo             *mat.Dense
 }
 
 func NewNN(c *fiber.Ctx) (*NN, error) {
@@ -53,36 +54,31 @@ func (nn *NN) InitWnB() {
 	hiddenSize := nn.HiddenSize
 	outputSize := 1 // only predicting one thing
 
-	// input hidden layer weights
-	wh := make([][]float64, inputSize)
-	for i := range wh {
-		wh[i] = make([]float64, hiddenSize)
-		for j := range wh[i] {
-			wh[i][j] = rand.Float64() - 0.5
-		}
-	}
+	// Initialize input hidden layer weights as a Gonum matrix
+	wh := mat.NewDense(inputSize, hiddenSize, nil)
+	wh.Apply(func(i, j int, v float64) float64 {
+		return rand.Float64() - 0.5
+	}, wh)
 
-	bh := make([]float64, hiddenSize)
-	for i := range bh {
-		bh[i] = rand.Float64() - 0.5
-	}
+	// Initialize hidden layer bias as a Gonum matrix
+	bh := mat.NewDense(1, hiddenSize, nil)
+	bh.Apply(func(i, j int, v float64) float64 {
+		return rand.Float64() - 0.5
+	}, bh)
 
-	// initialize weights and biases for hidden -> output layer
-	wo := make([][]float64, hiddenSize)
-	for i := range wo {
-		wo[i] = make([]float64, outputSize)
-		for j := range wo[i] {
-			wo[i][j] = rand.Float64() - 0.5
-		}
-	}
+	// Initialize weights and biases for hidden -> output layer as Gonum matrices
+	wo := mat.NewDense(hiddenSize, outputSize, nil)
+	wo.Apply(func(i, j int, v float64) float64 {
+		return rand.Float64() - 0.5
+	}, wo)
 
-	bo := make([]float64, outputSize)
-	for i := range bo {
-		bo[i] = rand.Float64() - 0.5
-	}
+	bo := mat.NewDense(1, outputSize, nil)
+	bo.Apply(func(i, j int, v float64) float64 {
+		return rand.Float64() - 0.5
+	}, bo)
 
-	nn.Wh = &wh
-	nn.Bh = &bh
-	nn.Wo = &wo
-	nn.Bo = &bo
+	nn.Wh = wh
+	nn.Bh = bh
+	nn.Wo = wo
+	nn.Bo = bo
 }

@@ -19,7 +19,6 @@ func main() {
 		}
 
 		nn.Train()
-
 		return c.SendString("No error")
 	})
 

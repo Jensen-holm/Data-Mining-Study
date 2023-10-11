@@ -3,6 +3,9 @@ package nn
 import (
 	"math"
 	"math/rand"
+
+	"github.com/go-gota/gota/dataframe"
+	"gonum.org/v1/gonum/mat"
 )
 
 func (nn *NN) TrainTestSplit() {
@@ -34,9 +37,24 @@ func (nn *NN) TrainTestSplit() {
 	XTest := test.Select(nn.Features)
 	YTest := test.Select(nn.Target)
 
-	nn.XTrain = &XTrain
-	nn.YTrain = &YTrain
-	nn.XTest = &XTest
-	nn.YTest = &YTest
+	// to make linear algebra easier & faster,
+	// we convert these dataframes that we are
+	// performing potentially expensive computations
+	// on into gonum matrices since we no longer need the
+	// column names.
+	nn.XTrain = df2mat(&XTrain)
+	nn.YTrain = df2mat(&YTrain)
+	nn.XTest = df2mat(&XTest)
+	nn.YTest = df2mat(&YTest)
+}
 
+// df2mat -> converts gota dataframe into gonum matrix
+func df2mat(df *dataframe.DataFrame) *mat.Dense {
+	m := mat.NewDense(df.Nrow(), df.Ncol(), nil)
+	for i := 0; i < df.Nrow(); i++ {
+		for j := 0; j < df.Ncol(); j++ {
+			m.Set(i, j, df.Elem(i, j).Float())
+		}
+	}
+	return m
 }
