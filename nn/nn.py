@@ -14,11 +14,6 @@ class NN:
         features: list[str],
         target: str,
         data: str,
-
-        wh: np.array,
-        wo: np.array,
-        bh: np.array,
-        bo: np.array,
     ):
         self.epochs = epochs
         self.hidden_size = hidden_size
@@ -28,21 +23,22 @@ class NN:
         self.features = features
         self.target = target
         self.data = data
-        self.wh: np.array = wh
-        self.wo: np.array = wo
-        self.bh: np.array = bh
-        self.bo: np.array = bo
 
+        self.wh: np.array = None
+        self.wo: np.array = None
+        self.bh: np.array = None
+        self.bo: np.array = None
         self.func_prime: Callable = None
         self.func: Callable = None
         self.df: pd.DataFrame = None
         self.X: pd.DataFrame = None
         self.y: pd.DataFrame = None
 
-    def read_csv(self) -> dict[str, str]:
-        self.df = pd.read_csv(self.data)
-        self.X = self.df[self.features]
-        self.y = self.df[self.target]
+    def set_df(self, df: pd.DataFrame) -> None:
+        assert isinstance(df, pd.DataFrame)
+        self.df = df
+        self.X = df[self.features]
+        self.y = df[self.target]
 
     def set_func(self, f: Callable) -> None:
         assert isinstance(f, Callable)

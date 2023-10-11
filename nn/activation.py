@@ -18,7 +18,7 @@ def get_activation(nn: NN) -> Callable:
     }
 
     nn.set_func(funcs[a])
-    nn.set_func_prime(funcs[a])
+    nn.set_func_prime(prime_funcs[a])
 
 
 def relu(x):

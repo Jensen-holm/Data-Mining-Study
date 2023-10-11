@@ -1,8 +1,10 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 
-import pandas as pd
 from nn.nn import NN
 from nn import train as train_nn
+from nn import activation
+import pandas as pd
+import io
 
 app = Flask(__name__)
 
@@ -13,13 +15,30 @@ def neural_net():
 
     try:
         net = NN.from_dict(args)
-        df = pd.read_csv(args.pop("data"))
     except Exception as e:
-        return jsonify({
-            "bad request": f"could not read csv data: {e}",
-        })
+        return Response(
+            response=f"issue with request args: {e}",
+            status=400,
+        )
 
-    result = train_nn(nn=net)
+    try:
+        df = pd.read_csv(io.StringIO(net.data))
+        net.set_df(df=df)
+    except Exception as e:
+        return Response(
+            response=f"error reading csv data: {e}",
+            status=400,
+        )
+
+    try:
+        activation.get_activation(nn=net)
+    except Exception as e:
+        return Response(
+            response="invalid activation function",
+            status=400,
+        )
+
+    result = train_nn.train(nn=net)
     return jsonify(result)
 
 

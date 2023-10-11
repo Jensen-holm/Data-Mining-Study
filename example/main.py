@@ -14,10 +14,10 @@ ARGS = {
     "data": iris_data.decode("utf-8"),
 }
 
-r = requests.post(
-    "http://127.0.0.1:5000/neural-network",
-    json=ARGS,
-)
-
 if __name__ == "__main__":
-    print(r.json())
+    r = requests.post(
+        "http://127.0.0.1:5000/neural-network",
+        json=ARGS,  # Send the data as a JSON object
+    )
+
+    print(r.text)
