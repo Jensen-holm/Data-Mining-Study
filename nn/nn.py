@@ -24,8 +24,6 @@ class NN:
         self.target = target
         self.data = data
 
-        self.input_size = len(features)
-
         self.wh: np.array = None
         self.wo: np.array = None
         self.bh: np.array = None
@@ -39,8 +37,12 @@ class NN:
     def set_df(self, df: pd.DataFrame) -> None:
         assert isinstance(df, pd.DataFrame)
         self.df = df
-        self.X = df[self.features]
-        self.y = df[self.target]
+        # we can only deal with numbers from here on out
+        y = df[self.target]
+        x = df[self.features]
+        self.y = pd.get_dummies(y, columns=self.target)
+        self.X = pd.get_dummies(x, columns=self.features)
+        self.input_size = len(self.X.columns)
 
     def set_func(self, f: Callable) -> None:
         assert isinstance(f, Callable)
