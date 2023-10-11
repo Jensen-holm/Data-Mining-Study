@@ -31,7 +31,7 @@ def neural_net():
 
     try:
         activation.get_activation(nn=net)
-    except Exception as e:
+    except Exception:
         return Response(
             response="invalid activation function",
             status=400,

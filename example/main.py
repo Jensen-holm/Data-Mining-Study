@@ -4,11 +4,11 @@ with open("iris.csv", "rb") as csv:
     iris_data = csv.read()
 
 ARGS = {
-    "epochs": 100,
-    "hidden_size": 12,
-    "learning_rate": 0.01,
-    "test_size": 0.3,
-    "activation": "tanh",
+    "epochs": 10000,
+    "hidden_size": 8,
+    "learning_rate": 0.0001,
+    "test_size": 0.1,
+    "activation": "relu",
     "features": ["sepal width", "sepal length", "petal width", "petal length"],
     "target": "species",
     "data": iris_data.decode("utf-8"),

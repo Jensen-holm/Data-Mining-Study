@@ -22,14 +22,11 @@ def get_activation(nn: NN) -> Callable:
 
 
 def relu(x):
-    return np.max(0.0, x)
+    return np.maximum(0.0, x)
 
 
 def relu_prime(x):
-    if x > 0:
-        return 1
-    else:
-        return 0
+    return np.maximum(0, x)
 
 
 def sigmoid(x):
@@ -38,7 +35,7 @@ def sigmoid(x):
 
 def sigmoid_prime(x):
     s = sigmoid(x)
-    return s / (1.0 - s)
+    return s * (1 - s)
 
 
 def tanh(x):

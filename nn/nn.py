@@ -29,16 +29,23 @@ class NN:
         self.df: pd.DataFrame = None
         self.X: pd.DataFrame = None
         self.y: pd.DataFrame = None
+        self.y_dummy: pd.DataFrame = None
+        self.input_size: int = None
+        self.output_size: int = None
 
     def set_df(self, df: pd.DataFrame) -> None:
+
+        # issue right now here because we need a way to convert
+        # back and forth from dummies and non dummy vars
+
         assert isinstance(df, pd.DataFrame)
         self.df = df
-        # we can only deal with numbers from here on out
-        y = df[self.target]
+        self.y = df[self.target]
         x = df[self.features]
-        self.y = pd.get_dummies(y, columns=self.target)
+        self.y_dummy = pd.get_dummies(self.y, columns=self.target)
         self.X = pd.get_dummies(x, columns=self.features)
         self.input_size = len(self.X.columns)
+        self.output_size = len(self.y_dummy.columns)
 
     def set_func(self, f: Callable) -> None:
         assert isinstance(f, Callable)
