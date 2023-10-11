@@ -10,24 +10,27 @@ import (
 )
 
 type NN struct {
-	CSVData        string   `json:"csv_data"`
-	Features       []string `json:"features"`
-	Target         string   `json:"target"`
-	Epochs         int      `json:"epochs"`
-	HiddenSize     int      `json:"hidden_size"`
-	LearningRate   float64  `json:"learning_rate"`
-	ActivationFunc string   `json:"activation"`
-	TestSize       float64  `json:"test_size"`
+	// attributes set by request
+	CSVData      string   `json:"csv_data"`
+	Features     []string `json:"features"`
+	Target       string   `json:"target"`
+	Epochs       int      `json:"epochs"`
+	HiddenSize   int      `json:"hidden_size"`
+	LearningRate float64  `json:"learning_rate"`
+	Activation   string   `json:"activation"`
+	TestSize     float64  `json:"test_size"`
 
-	Df     *dataframe.DataFrame
-	XTrain dataframe.DataFrame
-	YTrain dataframe.DataFrame
-	XTest  dataframe.DataFrame
-	YTest  dataframe.DataFrame
-	Wh     [][]float64
-	Bh     []float64
-	Wo     [][]float64
-	Bo     []float64
+	// attributes set after args above are parsed
+	ActivationFunc *func(float64) float64
+	Df             *dataframe.DataFrame
+	XTrain         *dataframe.DataFrame
+	YTrain         *dataframe.DataFrame
+	XTest          *dataframe.DataFrame
+	YTest          *dataframe.DataFrame
+	Wh             *[][]float64
+	Bh             *[]float64
+	Wo             *[][]float64
+	Bo             *[]float64
 }
 
 func NewNN(c *fiber.Ctx) (*NN, error) {
@@ -37,22 +40,11 @@ func NewNN(c *fiber.Ctx) (*NN, error) {
 		return nil, fmt.Errorf("invalid JSON data: %v", err)
 	}
 	df := dataframe.ReadCSV(strings.NewReader(newNN.CSVData))
+	activation := ActivationMap[newNN.Activation]
+
 	newNN.Df = &df
+	newNN.ActivationFunc = &activation
 	return newNN, nil
-}
-
-func (nn *NN) Train() {
-	// train test split the data
-	_, _, _, _ = nn.trainTestSplit()
-
-	nn.InitWnB()
-
-	// iterate n times where n = nn.Epochs
-	// use backprop algorithm on each iteration
-	// to fit the model to the data
-	for i := 0; i < nn.Epochs; i++ {
-	}
-
 }
 
 func (nn *NN) InitWnB() {
@@ -89,8 +81,8 @@ func (nn *NN) InitWnB() {
 		bo[i] = rand.Float64() - 0.5
 	}
 
-	nn.Wh = wh
-	nn.Bh = bh
-	nn.Wo = wo
-	nn.Bo = bo
+	nn.Wh = &wh
+	nn.Bh = &bh
+	nn.Wo = &wo
+	nn.Bo = &bo
 }
