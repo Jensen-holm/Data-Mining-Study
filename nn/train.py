@@ -1,5 +1,5 @@
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import log_loss, accuracy_score, f1_score
+from sklearn.metrics import log_loss
 from typing import Callable
 from nn.nn import NN
 import numpy as np
@@ -81,7 +81,8 @@ def train(nn: NN) -> dict:
     )
 
     return {
-        "log loss": log_loss(y_true=y_test, y_pred=y_hat)
+        "log loss": log_loss(y_true=y_test, y_pred=y_hat),
+        "accuracy": accuracy_score(y_true=y_test, y_pred=y_hat)
     }
 
 
@@ -107,3 +108,15 @@ def hidden_weight_prime(data, error):
 
 def output_weight_prime(hidden_output, error):
     return np.dot(hidden_output.T, error)
+
+
+def accuracy_score(y_true, y_pred):
+    # Ensure y_true and y_pred have the same shape
+    if y_true.shape != y_pred.shape:
+        raise ValueError("Input shapes do not match.")
+
+    # Calculate the accuracy
+    num_samples = len(y_true)
+    num_correct = np.sum(y_true == y_pred)
+
+    return num_correct / num_samples

@@ -26,7 +26,6 @@ class NN:
         self.loss_hist: list[float] = None
         self.func_prime: Callable = None
         self.func: Callable = None
-        self.df: pd.DataFrame = None
         self.X: pd.DataFrame = None
         self.y: pd.DataFrame = None
         self.y_dummy: pd.DataFrame = None
@@ -34,16 +33,11 @@ class NN:
         self.output_size: int = None
 
     def set_df(self, df: pd.DataFrame) -> None:
-
-        # issue right now here because we need a way to convert
-        # back and forth from dummies and non dummy vars
-
         assert isinstance(df, pd.DataFrame)
-        self.df = df
-        self.y = df[self.target]
         x = df[self.features]
-        self.y_dummy = pd.get_dummies(self.y, columns=self.target)
+        y = df[self.target]
         self.X = pd.get_dummies(x, columns=self.features)
+        self.y_dummy = pd.get_dummies(y, columns=self.target)
         self.input_size = len(self.X.columns)
         self.output_size = len(self.y_dummy.columns)
 
