@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, Response
+from flask_cors import CORS
 from nn.nn import NN
 from nn import train as train_nn
 from nn import activation
@@ -6,6 +7,8 @@ import pandas as pd
 import io
 
 app = Flask(__name__)
+
+CORS(app, origins="*")
 
 
 @app.route("/neural-network", methods=["POST"])
