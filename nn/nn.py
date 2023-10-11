@@ -24,6 +24,8 @@ class NN:
         self.target = target
         self.data = data
 
+        self.input_size = len(features)
+
         self.wh: np.array = None
         self.wo: np.array = None
         self.bh: np.array = None
@@ -47,6 +49,18 @@ class NN:
     def set_func_prime(self, f: Callable) -> None:
         assert isinstance(f, Callable)
         self.func_prime = f
+
+    def set_bh(self, bh: np.array) -> None:
+        self.bh = bh
+
+    def set_wh(self, wh: np.array) -> None:
+        self.wh = wh
+
+    def set_bo(self, bo: np.array) -> None:
+        self.bo = bo
+
+    def set_wo(self, wo: np.array) -> None:
+        self.wo = wo
 
     @classmethod
     def from_dict(cls, dct):
