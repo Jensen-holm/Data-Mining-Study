@@ -6,7 +6,7 @@ import numpy as np
 
 
 def init_weights_biases(nn: NN):
-    # np.random.seed(0)
+    np.random.seed(0)
     bh = np.zeros((1, nn.hidden_size))
     bo = np.zeros((1, nn.output_size))
     wh = np.random.randn(nn.input_size, nn.hidden_size) * \
@@ -18,14 +18,15 @@ def init_weights_biases(nn: NN):
 
 def train(nn: NN) -> dict:
     wh, wo, bh, bo = init_weights_biases(nn=nn)
+
     X_train, X_test, y_train, y_test = train_test_split(
         nn.X.to_numpy(),
         nn.y_dummy.to_numpy(),
         test_size=nn.test_size,
-        # random_state=0,
+        random_state=0,
     )
 
-    ce: float = 0.0
+    accuracy_scores = []
     loss_hist: list[float] = []
     for _ in range(nn.epochs):
         # compute hidden output
@@ -46,6 +47,8 @@ def train(nn: NN) -> dict:
         # compute error & store it
         error = y_hat - y_train
         loss = log_loss(y_true=y_train, y_pred=y_hat)
+        accuracy = accuracy_score(y_true=y_train, y_pred=y_hat)
+        accuracy_scores.append(accuracy)
         loss_hist.append(loss)
 
         # compute derivatives of weights & biases
@@ -84,6 +87,7 @@ def train(nn: NN) -> dict:
         "loss_hist": loss_hist,
         "log_loss": log_loss(y_true=y_test, y_pred=y_hat),
         "accuracy": accuracy_score(y_true=y_test, y_pred=y_hat),
+        "accuracy_scores": accuracy_scores,
     }
 
 

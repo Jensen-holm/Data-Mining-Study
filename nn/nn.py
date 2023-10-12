@@ -1,4 +1,5 @@
 from typing import Callable
+from sklearn.preprocessing import StandardScaler
 import pandas as pd
 
 
@@ -40,6 +41,11 @@ class NN:
         self.y_dummy = pd.get_dummies(y, columns=self.target)
         self.input_size = len(self.X.columns)
         self.output_size = len(self.y_dummy.columns)
+
+    def normalize(self):
+        scaler = StandardScaler()
+        self.y_dummy = scaler.fit_transform(self.y_dummy)
+        self.X = scaler.fit_transform(self.X)
 
     def set_func(self, f: Callable) -> None:
         assert isinstance(f, Callable)

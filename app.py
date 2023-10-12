@@ -45,4 +45,7 @@ def neural_net():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(
+        port=4000,
+        debug=True,
+    )
