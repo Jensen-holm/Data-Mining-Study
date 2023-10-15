@@ -88,6 +88,7 @@ def train(nn: NN) -> dict:
         "log_loss": log_loss(y_true=y_test, y_pred=y_hat),
         "accuracy": accuracy_score(y_true=y_test, y_pred=y_hat),
         "accuracy_scores": accuracy_scores,
+        "test_accuracy": accuracy_score(y_true=y_test, y_pred=y_hat)
     }
 
 
