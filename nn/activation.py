@@ -1,46 +1,59 @@
-from typing import Callable
-from nn.nn import NN
 import numpy as np
+from abc import abstractmethod, ABC
 
 
-def get_activation(nn: NN) -> Callable:
-    a = nn.activation
-    funcs = {
-        "relu": relu,
-        "sigmoid": sigmoid,
-        "tanh": tanh,
-    }
-
-    prime_funcs = {
-        "sigmoid": sigmoid_prime,
-        "tanh": tanh_prime,
-        "relu": relu_prime,
-    }
-
-    nn.set_func(funcs[a])
-    nn.set_func_prime(prime_funcs[a])
+__all__ = ["Activation", "Relu", "TanH", "Sigmoid", "SoftMax", "ACTIVATIONS"]
 
 
-def relu(x):
-    return np.maximum(0.0, x)
+class Activation(ABC):
+    @abstractmethod
+    def forward(self, X: np.ndarray) -> np.ndarray:
+        pass
+
+    @abstractmethod
+    def backward(self, X: np.ndarray) -> np.ndarray:
+        pass
 
 
-def relu_prime(x):
-    return np.maximum(0, x)
+class Relu(Activation):
+    def forward(self, X: np.ndarray) -> np.ndarray:
+        return np.maximum(0, X)
+
+    def backward(self, X: np.ndarray) -> np.ndarray:
+        return np.where(X > 0, 1, 0)
 
 
-def sigmoid(x):
-    return 1.0 / (1.0 + np.exp(-x))
+class TanH(Activation):
+    def forward(self, X: np.ndarray) -> np.ndarray:
+        return np.tanh(X)
+
+    def backward(self, X: np.ndarray) -> np.ndarray:
+        return 1 - self.forward(X) ** 2
 
 
-def sigmoid_prime(x):
-    s = sigmoid(x)
-    return s * (1 - s)
+class Sigmoid(Activation):
+    def forward(self, X: np.ndarray) -> np.ndarray:
+        return 1.0 / (1.0 + np.exp(-X))
+
+    def backward(self, X: np.ndarray) -> np.ndarray:
+        s = self.forward(X)
+        return s - (1 - s)
 
 
-def tanh(x):
-    return np.tanh(x)
+class SoftMax(Activation):
+    def forward(self, X: np.ndarray) -> np.ndarray:
+        exps = np.exp(
+            X - np.max(X, axis=1, keepdims=True)
+        )  # Avoid numerical instability
+        return exps / np.sum(exps, axis=1, keepdims=True)
+
+    def backward(self, X: np.ndarray) -> np.ndarray:
+        return X
 
 
-def tanh_prime(x):
-    return 1 - np.tanh(x)**2
+ACTIVATIONS: dict[str, Activation] = {
+    "Relu": Relu(),
+    "Sigmoid": Sigmoid(),
+    "Tanh": TanH(),
+    "SoftMax": SoftMax(),
+}
