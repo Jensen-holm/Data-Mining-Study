@@ -75,7 +75,7 @@ def classification(
 
 if __name__ == "__main__":
     with gr.Blocks() as interface:
-        gr.Markdown("# Backpropagation Playground")
+        gr.Markdown("# Numpy Neuron")
         gr.Markdown(
             """
             ## What is this? <br>
@@ -94,7 +94,7 @@ if __name__ == "__main__":
             is pretty expensive on 2 cpu cores that this space has. So if you are actually curious, you might want to clone
             this and run it locally because it will be much much faster.
 
-            `git clone https://huggingface.co/spaces/Jensen-holm/Backprop-Playground`
+            `git clone https://huggingface.co/spaces/Jensen-holm/Numpy-Neuron`
             
             After cloning, you will have to install the dependencies from requirements.txt into your environment. (venv reccommended)
 
