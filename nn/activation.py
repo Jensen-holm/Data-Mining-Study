@@ -2,9 +2,6 @@ import numpy as np
 from abc import abstractmethod, ABC
 
 
-__all__ = ["Activation", "Relu", "TanH", "Sigmoid", "SoftMax", "ACTIVATIONS"]
-
-
 class Activation(ABC):
     @abstractmethod
     def forward(self, X: np.ndarray) -> np.ndarray:
@@ -54,6 +51,6 @@ class SoftMax(Activation):
 ACTIVATIONS: dict[str, Activation] = {
     "Relu": Relu(),
     "Sigmoid": Sigmoid(),
-    "Tanh": TanH(),
+    "TanH": TanH(),
     "SoftMax": SoftMax(),
 }
