@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 import gradio as gr
 import numpy as np
 
-from nn.activation import Activation, Relu, SoftMax
+from nn.activation import Activation
 from nn.loss import Loss
 
 

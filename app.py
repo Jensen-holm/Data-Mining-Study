@@ -1,5 +1,3 @@
-from nn.activation import SoftMax
-import plotly.express as px
 from sklearn import datasets
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.model_selection import train_test_split
