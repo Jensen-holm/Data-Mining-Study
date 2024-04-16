@@ -134,7 +134,7 @@ if __name__ == "__main__":
                             choices=["Relu", "Sigmoid", "TanH"],
                             label="Hidden Layer Activation",
                         ),
-                        gr.Dropdown(choices=["SoftMax"], label="Output Activation"),
+                        gr.Dropdown(choices=["SoftMax", "Sigmoid"], label="Output Activation"),
                         gr.Dropdown(
                             choices=["CrossEntropy", "CrossEntropyWithLogitsLoss"],
                             label="Loss Function",
