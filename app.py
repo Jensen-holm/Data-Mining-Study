@@ -13,9 +13,6 @@ from vis import (  # classification visualization funcitons
 )
 
 
-type number = float | int
-
-
 def _preprocess_digits(
     seed: int,
 ) -> tuple[np.ndarray, ...]:
@@ -42,8 +39,8 @@ def classification(
     loss_fn_str: str,
     epochs: int,
     hidden_size: int,
-    batch_size: number,
-    learning_rate: number,
+    batch_size: float,
+    learning_rate: float,
 ) -> tuple[gr.Plot, gr.Plot, gr.Label]:
     assert hidden_layer_activation_fn in nn.ACTIVATIONS
     assert output_layer_activation_fn in nn.ACTIVATIONS
