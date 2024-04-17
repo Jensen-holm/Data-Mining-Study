@@ -15,9 +15,10 @@ class NN:
     learning_rate: float
     hidden_size: int
     input_size: int
+    batch_size: float
     output_size: int
     hidden_activation_fn: Activation
-    activation_fn: Activation
+    output_activation_fn: Activation
     loss_fn: Loss
     seed: int
 
@@ -26,18 +27,25 @@ class NN:
     _wh: np.ndarray = field(default_factory=lambda: np.ndarray([]), init=False)
     _bo: np.ndarray = field(default_factory=lambda: np.ndarray([]), init=False)
     _bh: np.ndarray = field(default_factory=lambda: np.ndarray([]), init=False)
-    _weight_history: dict[str, list[np.ndarray]] = field(
-        default_factory=lambda: {
-            "wo": [],
-            "wh": [],
-            "bo": [],
-            "bh": [],
-        },
-        init=False,
-    )
+
+    # not currently using this, see TODO: at bottom of this file
+    # _weight_history: dict[str, list[np.ndarray]] = field(
+    #    default_factory=lambda: {
+    #        "wo": [],
+    #        "wh": [],
+    #        "bo": [],
+    #        "bh": [],
+    #    },
+    #    init=False,
+    # )
 
     def __post_init__(self) -> None:
+        assert 0 < self.batch_size <= 1
         self._init_weights_and_biases()
+
+    @classmethod
+    def from_dict(cls, args: dict) -> "NN":
+        return cls(**args)
 
     def _init_weights_and_biases(self) -> None:
         """
@@ -64,7 +72,6 @@ class NN:
             * np.sqrt(2 / self.hidden_size),
             dtype=DTYPE,
         )
-        return
 
     # def _forward(self, X_train: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     #     # Determine the activation function for the hidden layer
@@ -116,16 +123,16 @@ class NN:
         bo_prime = np.sum(error_output, axis=0, keepdims=True) * self.learning_rate
 
         # Propagate the error back to the hidden layer
-        error_hidden = np.dot(error_output, self._wo.T) * self.activation_fn.backward(
-            hidden_output
-        )
+        error_hidden = np.dot(
+            error_output, self._wo.T
+        ) * self.output_activation_fn.backward(hidden_output)
 
         # Calculate gradients for hidden layer weights and biases
         wh_prime = np.dot(X_train.T, error_hidden) * self.learning_rate
         bh_prime = np.sum(error_hidden, axis=0, keepdims=True) * self.learning_rate
 
         # Gradient clipping to prevent overflow
-        max_norm = 1.0  # You can adjust this threshold
+        max_norm = 1.0  # this is an adjustable threshold
         wo_prime = np.clip(wo_prime, -max_norm, max_norm)
         bo_prime = np.clip(bo_prime, -max_norm, max_norm)
         wh_prime = np.clip(wh_prime, -max_norm, max_norm)
@@ -137,17 +144,24 @@ class NN:
         self._bo -= bo_prime
         self._bh -= bh_prime
 
-    # TODO: implement batch size in training, this will speed up the training loop
-    # quite a bit I believe
     def train(self, X_train: np.ndarray, y_train: np.ndarray) -> "NN":
         for _ in gr.Progress().tqdm(range(self.epochs)):
-            y_hat, hidden_output = self._forward(X_train=X_train)
-            loss = self.loss_fn.forward(y_hat=y_hat, y_true=y_train)
+
+            n_samples = int(self.batch_size * X_train.shape[0])
+            batch_indeces = np.random.choice(
+                X_train.shape[0], size=n_samples, replace=False
+            )
+
+            X_train_batch = X_train[batch_indeces]
+            y_train_batch = y_train[batch_indeces]
+
+            y_hat, hidden_output = self._forward(X_train=X_train_batch)
+            loss = self.loss_fn.forward(y_hat=y_hat, y_true=y_train_batch)
             self._loss_history.append(loss)
             self._backward(
-                X_train=X_train,
+                X_train=X_train_batch,
                 y_hat=y_hat,
-                y_train=y_train,
+                y_train=y_train_batch,
                 hidden_output=hidden_output,
             )
 
@@ -162,4 +176,4 @@ class NN:
 
     def predict(self, X_test: np.ndarray) -> np.ndarray:
         pred, _ = self._forward(X_test)
-        return self.activation_fn.forward(pred)
+        return self.output_activation_fn.forward(pred)

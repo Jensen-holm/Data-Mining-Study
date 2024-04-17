@@ -1,6 +1,5 @@
 import matplotlib
 from sklearn import datasets
-import plotly.graph_objects as go
 import plotly.express as px
 import matplotlib.pyplot as plt
 import matplotlib
@@ -15,13 +14,13 @@ def show_digits():
     for ax, image, label in zip(axes, digits.images, digits.target):
         ax.set_axis_off()
         ax.imshow(image, cmap=plt.cm.gray_r, interpolation="nearest")
-        ax.set_title("Training: %i" % label)
+        ax.set_title(f"Training: {label}")
     return fig
 
 
 def loss_history_plt(loss_history: list[float], loss_fn_name: str):
     return px.line(
-        x=[i for i in range(len(loss_history))],
+        x=list(range(len(loss_history))),
         y=loss_history,
         title=f"{loss_fn_name} Loss vs. Training Epoch",
         labels={
@@ -42,12 +41,11 @@ def hits_and_misses(y_pred: np.ndarray, y_true: np.ndarray):
         "True: " + str(y_true_decoded[i]) + ", Pred: " + str(y_pred_decoded[i])
         for i in range(len(y_pred_decoded))
     ]
-
     return px.scatter(
         x=np.arange(len(y_pred_decoded)),
         y=y_true_decoded,
         color=color,
-        title="Hits and Misses of Predictions",
+        title="Hits and Misses of Predictions on Validation Set",
         labels={
             "color": "Prediction Correctness",
             "x": "Sample Index",
@@ -59,8 +57,6 @@ def hits_and_misses(y_pred: np.ndarray, y_true: np.ndarray):
 
 
 def make_confidence_label(y_pred: np.ndarray, y_test: np.ndarray):
-    # decode the one hot endoced predictions
-    y_pred_labels = np.argmax(y_pred, axis=1)
     y_test_labels = np.argmax(y_test, axis=1)
     confidence_dict: dict[str, float] = {}
     for idx, class_name in enumerate([str(i) for i in range(10)]):

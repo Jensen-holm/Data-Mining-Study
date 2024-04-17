@@ -13,10 +13,13 @@ from vis import (  # classification visualization funcitons
 )
 
 
+type number = float | int
+
+
 def _preprocess_digits(
     seed: int,
-) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
-    digits = datasets.load_digits()
+) -> tuple[np.ndarray, ...]:
+    digits = datasets.load_digits(as_frame=False)
     n_samples = len(digits.images)
     data = digits.images.reshape((n_samples, -1))
     y = OneHotEncoder().fit_transform(digits.target.reshape(-1, 1)).toarray()
@@ -33,36 +36,43 @@ X_train, X_test, y_train, y_test = _preprocess_digits(seed=1)
 
 
 def classification(
-    Seed: int = 0,
-    Hidden_Layer_Activation: str = "Relu",
-    Activation_Func: str = "SoftMax",
-    Loss_Func: str = "CrossEntropyWithLogitsLoss",
-    Epochs: int = 100,
-    Hidden_Size: int = 8,
-    Learning_Rate: float = 0.001,
+    seed: int,
+    hidden_layer_activation_fn: str,
+    output_layer_activation_fn: str,
+    loss_fn_str: str,
+    epochs: int,
+    hidden_size: int,
+    batch_size: number,
+    learning_rate: number,
 ) -> tuple[gr.Plot, gr.Plot, gr.Label]:
-    assert Activation_Func in nn.ACTIVATIONS
-    assert Hidden_Layer_Activation in nn.ACTIVATIONS
-    assert Loss_Func in nn.LOSSES
+    assert hidden_layer_activation_fn in nn.ACTIVATIONS
+    assert output_layer_activation_fn in nn.ACTIVATIONS
+    assert loss_fn_str in nn.LOSSES
 
-    classifier = nn.NN(
-        epochs=Epochs,
-        learning_rate=Learning_Rate,
-        hidden_activation_fn=nn.ACTIVATIONS[Hidden_Layer_Activation],
-        activation_fn=nn.ACTIVATIONS[Activation_Func],
-        loss_fn=nn.LOSSES[Loss_Func],
-        hidden_size=Hidden_Size,
-        input_size=64,  # 8x8 image of pixels
+    loss_fn: nn.Loss = nn.LOSSES[loss_fn_str]
+    h_act_fn: nn.Activation = nn.ACTIVATIONS[hidden_layer_activation_fn]
+    o_act_fn: nn.Activation = nn.ACTIVATIONS[output_layer_activation_fn]
+
+    nn_classifier = nn.NN(
+        epochs=epochs,
+        hidden_size=hidden_size,
+        batch_size=batch_size,
+        learning_rate=learning_rate,
+        loss_fn=loss_fn,
+        hidden_activation_fn=h_act_fn,
+        output_activation_fn=o_act_fn,
+        input_size=64,  # 8x8 pixel grid images
         output_size=10,  # digits 0-9
-        seed=Seed,
+        seed=seed,
     )
-    classifier.train(X_train=X_train, y_train=y_train)
 
-    pred = classifier.predict(X_test=X_test)
+    nn_classifier.train(X_train=X_train, y_train=y_train)
+
+    pred = nn_classifier.predict(X_test=X_test)
     hits_and_misses_fig = hits_and_misses(y_pred=pred, y_true=y_test)
     loss_fig = loss_history_plt(
-        loss_history=classifier._loss_history,
-        loss_fn_name=classifier.loss_fn.__class__.__name__,
+        loss_history=nn_classifier._loss_history,
+        loss_fn_name=nn_classifier.loss_fn.__class__.__name__,
     )
 
     label_dict = make_confidence_label(y_pred=pred, y_test=y_test)
@@ -74,38 +84,13 @@ def classification(
 
 
 if __name__ == "__main__":
+    def _open_warning() -> str:
+        with open("warning.md", "r") as f:
+            return f.read()
+
     with gr.Blocks() as interface:
         gr.Markdown("# Numpy Neuron")
-        gr.Markdown(
-            """
-            ## What is this? <br>
-
-            The Backpropagation Playground is a GUI built around a neural network framework that I have built from scratch
-            in [numpy](https://numpy.org/). In this GUI, you can test different hyper parameters that will be fed to this framework and used
-            to train a neural network on the [MNIST](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_digits.html) dataset of 8x8 pixel images.
-
-            ## ⚠️ PLEASE READ ⚠️
-            This application is impossibly slow on the HuggingFace CPU instance that it is running on. It is advised to clone the 
-            repository and run it locally.
-
-            In order to get a decent classification score on the validation set of the MNIST data (hard coded to 20%), you will have to
-            do somewhere between 15,000 epochs and 50,000 epochs with a learning rate around 0.001, and a hidden layer size
-            over 10. (roughly the example that I have provided). Running this many epochs with a hidden layer of that size
-            is pretty expensive on 2 cpu cores that this space has. So if you are actually curious, you might want to clone
-            this and run it locally because it will be much much faster.
-
-            `git clone https://huggingface.co/spaces/Jensen-holm/Numpy-Neuron`
-            
-            After cloning, you will have to install the dependencies from requirements.txt into your environment. (venv reccommended)
-
-            `pip3 install -r requirements.txt`
-
-            Then, you can run the application on localhost with the following command.
-
-            `python3 app.py`
-
-            """
-        )
+        gr.Markdown(_open_warning())
 
         with gr.Tab("Classification"):
             with gr.Row():
@@ -120,11 +105,12 @@ if __name__ == "__main__":
                 with gr.Column():
                     numeric_inputs = [
                         gr.Slider(
-                            minimum=100, maximum=100_000, step=50, label="Epochs"
+                            minimum=100, maximum=10_000, step=50, label="Epochs"
                         ),
                         gr.Slider(
                             minimum=2, maximum=64, step=2, label="Hidden Network Size"
                         ),
+                        gr.Slider(minimum=0.1, maximum=1, step=0.1, label="Batch Size"),
                         gr.Number(minimum=0.00001, maximum=1.5, label="Learning Rate"),
                     ]
 
@@ -132,9 +118,12 @@ if __name__ == "__main__":
                     fn_inputs = [
                         gr.Dropdown(
                             choices=["Relu", "Sigmoid", "TanH"],
-                            label="Hidden Layer Activation",
+                            label="Hidden Layer Activation Function",
                         ),
-                        gr.Dropdown(choices=["SoftMax", "Sigmoid"], label="Output Activation"),
+                        gr.Dropdown(
+                            choices=["SoftMax", "Sigmoid"],
+                            label="Output Activation Function",
+                        ),
                         gr.Dropdown(
                             choices=["CrossEntropy", "CrossEntropyWithLogitsLoss"],
                             label="Loss Function",
@@ -151,12 +140,13 @@ if __name__ == "__main__":
                         [
                             2,
                             "Relu",
-                            "SoftMax",
+                            "Sigmoid",
                             "CrossEntropyWithLogitsLoss",
-                            15_000,
-                            14,
-                            0.001,
-                        ]
+                            2_000,
+                            16,
+                            1.0,
+                            0.01,
+                        ],
                     ],
                     inputs=inputs,
                 )
