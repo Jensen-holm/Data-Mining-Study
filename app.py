@@ -34,21 +34,21 @@ X_train, X_test, y_train, y_test = _preprocess_digits(seed=1)
 
 def classification(
     seed: int,
-    hidden_layer_activation_fn: str,
-    output_layer_activation_fn: str,
+    hidden_layer_activation_fn_str: str,
+    output_layer_activation_fn_str: str,
     loss_fn_str: str,
     epochs: int,
     hidden_size: int,
     batch_size: float,
     learning_rate: float,
 ) -> tuple[gr.Plot, gr.Plot, gr.Label]:
-    assert hidden_layer_activation_fn in nn.ACTIVATIONS
-    assert output_layer_activation_fn in nn.ACTIVATIONS
+    assert hidden_layer_activation_fn_str in nn.ACTIVATIONS
+    assert output_layer_activation_fn_str in nn.ACTIVATIONS
     assert loss_fn_str in nn.LOSSES
 
     loss_fn: nn.Loss = nn.LOSSES[loss_fn_str]
-    h_act_fn: nn.Activation = nn.ACTIVATIONS[hidden_layer_activation_fn]
-    o_act_fn: nn.Activation = nn.ACTIVATIONS[output_layer_activation_fn]
+    h_act_fn: nn.Activation = nn.ACTIVATIONS[hidden_layer_activation_fn_str]
+    o_act_fn: nn.Activation = nn.ACTIVATIONS[output_layer_activation_fn_str]
 
     nn_classifier = nn.NN(
         epochs=epochs,
@@ -163,8 +163,5 @@ if __name__ == "__main__":
                 inputs=inputs,
                 outputs=plt_outputs + label_output,
             )
-
-        with gr.Tab("Regression"):
-            gr.Markdown("### Coming Soon")
 
     interface.launch(show_error=True)
