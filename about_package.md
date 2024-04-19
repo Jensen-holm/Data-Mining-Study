@@ -1,7 +1,13 @@
 # Numpy-Neuron
 
 A small, simple neural network framework built using only [numpy](https://numpy.org) and python (duh).
-Here is an example of how to use the package for training a classifier.
+
+## Install
+
+`pip install numpy_neuron`
+
+
+## Example
 
 ```py
 from sklearn import datasets
@@ -71,11 +77,11 @@ if __name__ == "__main__":
     train_nn_classifier()
 ```
 
-
 ## Roadmap
 
 **Optimizers**
-I would love to add the ability to modify the learning rate over each epoch to ensure
-that the gradient descent algorithm does not get stuck in local minima as easily.
 
+Currently the learning rate in a NN object is static during training. I would like 
+to work on developing at least the functionality for the Adam optimizer at some point.
+This would help prevent getting stuck in local minima of the loss function.
 

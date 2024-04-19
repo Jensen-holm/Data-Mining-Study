@@ -14,7 +14,13 @@ license: mit
 # Numpy-Neuron
 
 A small, simple neural network framework built using only [numpy](https://numpy.org) and python (duh).
-Here is an example of how to use the package for training a classifier.
+
+## Install
+
+`pip install numpy_neuron`
+
+
+## Example
 
 ```py
 from sklearn import datasets
