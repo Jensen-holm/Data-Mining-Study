@@ -4,7 +4,7 @@ A small, simple neural network framework built using only [numpy](https://numpy.
 
 ## Install
 
-`pip install numpy_neuron`
+`pip install numpyneuron`
 
 
 ## Example
@@ -15,7 +15,7 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, precision_score, recall_score
 import numpy as np
-from nn import (
+from numpyneuron import (
     NN,
     Relu,
     Sigmoid,
