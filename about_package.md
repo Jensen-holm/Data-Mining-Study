@@ -1,16 +1,3 @@
----
-title: Numpy-Neuron
-emoji: 🔙
-colorFrom: yellow
-colorTo: blue
-sdk: gradio
-sdk_version: 4.26.0
-app_file: gradio_app.py
-pinned: false
-license: mit
----
-
-
 # Numpy-Neuron
 
 A small, simple neural network framework built using only [numpy](https://numpy.org) and python (duh).
@@ -92,10 +79,3 @@ I would love to add the ability to modify the learning rate over each epoch to e
 that the gradient descent algorithm does not get stuck in local minima as easily.
 
 
-## Gradio app demo development notes
-
-The remote added to this repo so that it runs on hugging face spaces
-`git remote add space git@hf.co:spaces/Jensen-holm/Numpy-Neuron` 
-
-The command to force push to that space
-`git push --force space main`

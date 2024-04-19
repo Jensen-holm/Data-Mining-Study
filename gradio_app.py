@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 import numpy as np
 import gradio as gr
 
-import nn  # custom neural network module
+import nn
 from vis import (  # classification visualization funcitons
     show_digits,
     hits_and_misses,
@@ -84,7 +84,7 @@ def classification(
 if __name__ == "__main__":
 
     def _open_warning() -> str:
-        with open("warning.md", "r") as f:
+        with open("gradio_warning.md", "r") as f:
             return f.read()
 
     with gr.Blocks() as interface:
