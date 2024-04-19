@@ -13,11 +13,11 @@ license: mit
 
 # Numpy-Neuron
 
-A small, simple neural network framework built using only [numpy](https://numpy.org) and python (duh).
+A small, simple neural network framework built using only [numpy](https://numpy.org) and python (duh). Check it out on [PyPI](https://pypi.org/project/numpy-neuron/)
 
 ## Install
 
-`pip install numpy_neuron`
+`pip install numpy-neuron`
 
 
 ## Example

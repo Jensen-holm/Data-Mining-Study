@@ -1,3 +1,3 @@
-from nn.loss import *
-from nn.activation import *
-from nn.nn import *
+from .loss import *
+from .activation import *
+from .nn import *
