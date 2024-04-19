@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from nn.activation import SoftMax
+from .activation import SoftMax
 import numpy as np
 
 

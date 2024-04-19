@@ -4,8 +4,8 @@ import gradio as gr
 import numpy as np
 from tqdm import tqdm
 
-from nn.activation import Activation
-from nn.loss import Loss, LogitsLoss
+from .activation import Activation
+from .loss import Loss, LogitsLoss
 
 
 DTYPE = np.float32

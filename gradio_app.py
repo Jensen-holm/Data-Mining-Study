@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 import numpy as np
 import gradio as gr
 
-import nn
+import numpyneuron as nn
 from vis import (  # classification visualization funcitons
     show_digits,
     hits_and_misses,

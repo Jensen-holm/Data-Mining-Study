@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="numpyneuron",
-    version="0.2",
+    version="0.3",
     author="Jensen Holm",
     author_email="jensen.dev.01@gmail.com",
     description="Simple, lightweight neural network framework built in numpy",
