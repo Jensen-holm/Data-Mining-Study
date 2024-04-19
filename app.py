@@ -61,6 +61,7 @@ def classification(
         input_size=64,  # 8x8 pixel grid images
         output_size=10,  # digits 0-9
         seed=seed,
+        _gradio_app=True,
     )
 
     nn_classifier.train(X_train=X_train, y_train=y_train)
@@ -81,6 +82,7 @@ def classification(
 
 
 if __name__ == "__main__":
+
     def _open_warning() -> str:
         with open("warning.md", "r") as f:
             return f.read()
@@ -101,9 +103,7 @@ if __name__ == "__main__":
             with gr.Row():
                 with gr.Column():
                     numeric_inputs = [
-                        gr.Slider(
-                            minimum=100, maximum=10_000, step=50, label="Epochs"
-                        ),
+                        gr.Slider(minimum=100, maximum=10_000, step=50, label="Epochs"),
                         gr.Slider(
                             minimum=2, maximum=64, step=2, label="Hidden Network Size"
                         ),

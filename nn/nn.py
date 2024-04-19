@@ -1,9 +1,11 @@
 from dataclasses import dataclass, field
+from typing import Callable, Optional
 import gradio as gr
 import numpy as np
+from tqdm import tqdm
 
 from nn.activation import Activation
-from nn.loss import Loss
+from nn.loss import Loss, LogitsLoss
 
 
 DTYPE = np.float32
@@ -19,29 +21,43 @@ class NN:
     output_size: int
     hidden_activation_fn: Activation
     output_activation_fn: Activation
-    loss_fn: Loss
+    loss_fn: Loss | LogitsLoss
     seed: int
 
+    _gradio_app: bool = False
+    _p_bar: Optional[tqdm | gr.Progress] = field(
+        default_factory=lambda: None, init=False
+    )
+    _forward_fn: Optional[Callable] = field(default_factory=lambda: None, init=False)
     _loss_history: list = field(default_factory=lambda: [], init=False)
     _wo: np.ndarray = field(default_factory=lambda: np.ndarray([]), init=False)
     _wh: np.ndarray = field(default_factory=lambda: np.ndarray([]), init=False)
     _bo: np.ndarray = field(default_factory=lambda: np.ndarray([]), init=False)
     _bh: np.ndarray = field(default_factory=lambda: np.ndarray([]), init=False)
 
-    # not currently using this, see TODO: at bottom of this file
-    # _weight_history: dict[str, list[np.ndarray]] = field(
-    #    default_factory=lambda: {
-    #        "wo": [],
-    #        "wh": [],
-    #        "bo": [],
-    #        "bh": [],
-    #    },
-    #    init=False,
-    # )
-
     def __post_init__(self) -> None:
-        assert 0 < self.batch_size <= 1
         self._init_weights_and_biases()
+        self._forward_fn, self._p_bar = self._pre_train()
+
+        assert 0 < self.batch_size <= 1
+        assert self._forward_fn is not None
+        assert self._p_bar is not None
+
+    def _pre_train(self) -> tuple[Callable, tqdm | gr.Progress]:
+        def _get_forward_fn() -> Callable:
+            if isinstance(self.loss_fn, LogitsLoss):
+                return self._forward_logits
+            return self._forward
+
+        def _get_p_bar() -> tqdm | gr.Progress:
+            if self._gradio_app:
+                return gr.Progress().tqdm(range(self.epochs))
+            return tqdm(range(self.epochs), unit="epoch", ascii=" >=")
+
+        return (
+            _get_forward_fn(),
+            _get_p_bar(),
+        )
 
     @classmethod
     def from_dict(cls, args: dict) -> "NN":
@@ -73,35 +89,23 @@ class NN:
             dtype=DTYPE,
         )
 
-    # def _forward(self, X_train: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
-    #     # Determine the activation function for the hidden layer
-    #     if self._activation_fn.__class__.__name__ == "SoftMax":
-    #         # Using ReLU for hidden layer when softmax is used in output layer
-    #         hidden_layer_activation = Sigmoid()
-    #     else:
-    #         # Use the specified activation function if not using softmax
-    #         hidden_layer_activation = self._activation_fn
-
-    #     # Compute the hidden layer output
-    #     hidden_layer_output = hidden_layer_activation.forward(
-    #         np.dot(X_train, self._wh) + self._bh
-    #     )
-
-    #     # Compute the output layer (prediction layer) using the specified activation function
-    #     y_hat = self._activation_fn.forward(
-    #         np.dot(hidden_layer_output, self._wo) + self._bo
-    #     )
-
-    #     return y_hat, hidden_layer_output
-
-    # TODO: make this forward function the main _forward function if
-    # the loss function that the user selected is a "logits" loss. Call
-    # The one above if it is not.
     def _forward(self, X_train: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+        hidden_layer_output = self.hidden_activation_fn.forward(
+            np.dot(X_train, self._wh) + self._bh
+        )
+
+        # Compute the output layer (prediction layer) using the specified activation function
+        y_hat = self.output_activation_fn.forward(
+            np.dot(hidden_layer_output, self._wo) + self._bo
+        )
+
+        return y_hat, hidden_layer_output
+
+    def _forward_logits(self, X_train: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         hidden_layer_output = self.hidden_activation_fn.forward(
             np.dot(X_train, self._wh) + self._bh,
         )
-        # Output layer does not apply softmax anymore, just return logits
+        # output layer does not apply softmax like other forward function, just return logits
         logits = np.dot(hidden_layer_output, self._wo) + self._bo
         return logits, hidden_layer_output
 
@@ -145,8 +149,10 @@ class NN:
         self._bh -= bh_prime
 
     def train(self, X_train: np.ndarray, y_train: np.ndarray) -> "NN":
-        for _ in gr.Progress().tqdm(range(self.epochs)):
+        assert self._p_bar is not None
+        assert self._forward_fn is not None
 
+        for _ in self._p_bar:
             n_samples = int(self.batch_size * X_train.shape[0])
             batch_indeces = np.random.choice(
                 X_train.shape[0], size=n_samples, replace=False
@@ -155,7 +161,7 @@ class NN:
             X_train_batch = X_train[batch_indeces]
             y_train_batch = y_train[batch_indeces]
 
-            y_hat, hidden_output = self._forward(X_train=X_train_batch)
+            y_hat, hidden_output = self._forward_fn(X_train=X_train_batch)
             loss = self.loss_fn.forward(y_hat=y_hat, y_true=y_train_batch)
             self._loss_history.append(loss)
             self._backward(
@@ -165,15 +171,9 @@ class NN:
                 hidden_output=hidden_output,
             )
 
-            # TODO: make a 3d visualization traversing loss plane. Might be too
-            # expenzive to do though.
-            # keep track of weights an biases at each epoch for visualization
-            # self._weight_history["wo"].append(self._wo[0, 0])
-            # self._weight_history["wh"].append(self._wh[0, 0])
-            # self._weight_history["bo"].append(self._bo[0, 0])
-            # self._weight_history["bh"].append(self._bh[0, 0])
         return self
 
     def predict(self, X_test: np.ndarray) -> np.ndarray:
-        pred, _ = self._forward(X_test)
+        assert self._forward_fn is not None
+        pred, _ = self._forward_fn(X_test)
         return self.output_activation_fn.forward(pred)
