@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="numpy_neuron",
-    version="1.1",
+    name="numpyneuron",
+    version="0.2",
     author="Jensen Holm",
     author_email="jensen.dev.01@gmail.com",
     description="Simple, lightweight neural network framework built in numpy",
@@ -10,8 +10,8 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/Jensen-holm/Numpy-Neuron",
     project_urls={"Bug Tracker": "https://github.com/Jensen-holm/Numpy-Neuron/issues"},
-    package_dir={"": "nn"},
-    packages=find_packages(where="nn"),
+    package_dir={"": "numpyneuron"},
+    packages=find_packages(where="numpyneuron"),
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
