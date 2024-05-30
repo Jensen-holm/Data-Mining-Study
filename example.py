@@ -63,4 +63,3 @@ def train_nn_classifier() -> None:
 
 if __name__ == "__main__":
     train_nn_classifier()
-

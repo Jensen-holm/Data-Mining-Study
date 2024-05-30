@@ -12,7 +12,6 @@ setup(
     project_urls={"Bug Tracker": "https://github.com/Jensen-holm/Numpy-Neuron/issues"},
     package_dir={"": "."},
     packages=find_packages(),
-    classifiers=[
-    ],
+    classifiers=[],
     python_requires=">=3.6",
 )
