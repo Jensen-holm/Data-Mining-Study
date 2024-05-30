@@ -90,6 +90,13 @@ if __name__ == "__main__":
     train_nn_classifier()
 ```
 
+## Running Example
+
+1. `git clone https://Jensen-holm/Numpy-Neuron.git && cd Numpy-Neuron`
+2. `virtualenv venv` (can use other tools to create virtual environment)
+3. `source venv/bin/activate`
+4. `pip install -r requirements.txt numpyneuron`
+5. `python3 example.py`
 
 ## Roadmap
 
