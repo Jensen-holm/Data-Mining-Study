@@ -4,11 +4,11 @@ from abc import abstractmethod, ABC
 
 class Activation(ABC):
     @abstractmethod
-    def forward(self, X: np.ndarray) -> np.ndarray:
+    def forward(X: np.ndarray) -> np.ndarray:
         pass
 
     @abstractmethod
-    def backward(self, X: np.ndarray) -> np.ndarray:
+    def backward(X: np.ndarray) -> np.ndarray:
         pass
 
 
