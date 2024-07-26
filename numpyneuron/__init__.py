@@ -8,3 +8,9 @@ ACTIVATIONS: dict[str, Activation] = {
     "TanH": TanH(),
     "SoftMax": SoftMax(),
 }
+
+LOSSES: dict[str, Loss] = {
+    "MSE": MSE(),
+    "CrossEntropy": CrossEntropy(),
+    "CrossEntropyWithLogitsLoss": CrossEntropyWithLogits(),
+}
