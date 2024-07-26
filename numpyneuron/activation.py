@@ -39,18 +39,11 @@ class Sigmoid(Activation):
 
 class SoftMax(Activation):
     def forward(self, X: np.ndarray) -> np.ndarray:
+        ax = 1 if X.ndim > 1 else 0
         exps = np.exp(
-            X - np.max(X, axis=1, keepdims=True)
+            X - np.max(X, axis=ax, keepdims=True)
         )  # Avoid numerical instability
-        return exps / np.sum(exps, axis=1, keepdims=True)
+        return exps / np.sum(exps, axis=ax, keepdims=True)
 
     def backward(self, X: np.ndarray) -> np.ndarray:
         return X
-
-
-ACTIVATIONS: dict[str, Activation] = {
-    "Relu": Relu(),
-    "Sigmoid": Sigmoid(),
-    "TanH": TanH(),
-    "SoftMax": SoftMax(),
-}
