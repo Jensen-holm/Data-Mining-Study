@@ -26,7 +26,7 @@ A small, simple neural network framework built using only [numpy](https://numpy.
 from sklearn import datasets
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, precision_score, recall_score
+from sklearn.metrics import accuracy_score
 import numpy as np
 from numpyneuron import (
     NN,
@@ -39,7 +39,7 @@ from numpyneuron import (
 RANDOM_SEED = 2
 
 
-def _preprocess_digits(
+def preprocess_digits(
     seed: int,
 ) -> tuple[np.ndarray, ...]:
     digits = datasets.load_digits(as_frame=False)
@@ -55,9 +55,10 @@ def _preprocess_digits(
     return X_train, X_test, y_train, y_test
 
 
-def train_nn_classifier() -> None:
-    X_train, X_test, y_train, y_test = _preprocess_digits(seed=RANDOM_SEED)
-
+def train_nn_classifier(
+    X_train: np.ndarray,
+    y_train: np.ndarray,
+) -> NN:
     nn_classifier = NN(
         epochs=2_000,
         hidden_size=16,
@@ -75,19 +76,19 @@ def train_nn_classifier() -> None:
         X_train=X_train,
         y_train=y_train,
     )
+    return nn_classifier
 
-    pred = nn_classifier.predict(X_test=X_test)
 
+if __name__ == "__main__":
+    X_train, X_test, y_train, y_test = preprocess_digits(seed=RANDOM_SEED)
+    classifier = train_nn_classifier(X_train, y_train)
+
+    pred = classifier.predict(X_test)
     pred = np.argmax(pred, axis=1)
     y_test = np.argmax(y_test, axis=1)
 
     accuracy = accuracy_score(y_true=y_test, y_pred=pred)
-
     print(f"accuracy on validation set: {accuracy:.4f}")
-
-
-if __name__ == "__main__":
-    train_nn_classifier()
 ```
 
 ## Running Example
